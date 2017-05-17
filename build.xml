@@ -1,0 +1,196 @@
+﻿<project basedir="." default="compile" name="jruby" xmlns:adapter="uri:adapter" xmlns:ivy="antlib:org.apache.ivy.ant">
+  <property file="build.properties"/>
+  <property file="ivy.properties"/>
+  <import file="${basedir}/resources/ivy/ant-ivy-includes.xml"/> <!-- Ivy tasks -->
+
+  <tstamp>
+    <format property="today" pattern="yyyy-MM-dd" locale="en"/>
+  </tstamp>
+
+  <target name="init">
+
+    <property name="ivy.publish.revision" value="3.6-SNAPSHOT"/>  <!-- Version number of this artifact -->
+    <property name="adp-core-version" value="3.6-SNAPSHOT"/>
+    <property name="jruby.version" value="9.1.8.0"/>
+    <property name="jruby.download.zip" value="jruby-bin-${jruby.version}.zip"/>
+    <property name="jruby.download.url" value="https://s3.amazonaws.com/jruby.org/downloads/${jruby.version}/${jruby.download.zip}"/>
+    <property name="manifest.title" value="Interlok/JRuby Integration"/>
+    <property name="src.dir" value="${basedir}/src/main/java"/>
+
+    <property name="testsrc.dir" value="${basedir}/src/test/java"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="test.resources.dir" value="${basedir}/src/test/resources"/>
+    <property name="example-xml.build.dir"  value="${build.dir}/example-xml"/>
+    <property name="example.xml" value="${example-xml.build.dir}"/>
+    <property name="doc.dir"                value="${basedir}/docs"/>
+    <property name="example-xml.doc.zip"    value="${doc.dir}/example-xml.zip"/>
+
+    <property name="execution.maxmem" value="2G"/>
+
+    <property name="classes.build.dir" value="${build.dir}/classes"/>
+    <property name="testclasses.build.dir" value="${build.dir}/testclasses"/>
+    <property name="doc.dir" value="${basedir}/docs"/>
+    <property name="api.doc.dir" value="${build.dir}/api"/>
+    <property name="api.img.dir" value="${build.dir}/api-images"/>
+    <property name="tests.output.dir" value="${build.dir}/testoutput"/>
+    <property name="html.tests.output.dir" value="${tests.output.dir}/html"/>
+    <property name="jar.version" value="${today}"/>
+
+    <property name="javac.include.classes"  value="**/*.java" />
+    <property name="junit.test.classes"     value="**/*Test*.java" />
+    <property name="javac.target.version"   value="1.7"/>
+    <patternset id="javac.exclude.sources">
+    </patternset>
+
+    <patternset id="junit.exclude.sources">
+    </patternset>
+    <patternset id="junit.exclude.tests">
+      <exclude name="**/AllTests.java"/>
+      <exclude name="**/stubs/*.java"/>
+    </patternset>
+
+    <property name="build.tmp.dir" value="${build.dir}/tmp"/>
+    <property name="jar.version"            value="${today}-${user.name}"/>
+    <property name="project.name"           value="interlok-${ant.project.name}"/>
+
+    <property name="project.dist.dir" value="${build.dir}/dist"/>
+    <property name="project.jar.name" value = "${project.name}.jar"/>
+    <property name="project.pom.description" value="${manifest.title}"/>
+
+    <property name="tmp.jar.name" value = "${project.name}-tmp.jar"/>
+    <property name="yguard.report" value="${build.dir}/${project.name}-${jar.version}.yguard.xml.gz"/>
+
+  </target>
+
+<!-- clean -->
+  <target name="clean" depends="init" description="Remove build artifacts">
+    <delete dir="${build.dir}"/>
+    <delete dir="${tests.output.dir}"/>
+    <delete>
+      <fileset file="${coverage.metadata.file}"/>
+      <fileset dir="${basedir}">
+        <include name="junit*.properties"/>
+        <include name="jacoco.exec"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="prepare" depends="init, prepare-ivy">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${classes.build.dir}"/>
+    <mkdir dir="${testclasses.build.dir}"/>
+    <mkdir dir="${build.tmp.dir}"/>
+    <mkdir dir="${example.xml}"/>
+    <mkdir dir="${project.dist.dir}"/>
+  </target>
+
+  <target name="prepare-jruby" depends="prepare">
+    <get src="${jruby.download.url}" dest="${build.dir}/${jruby.download.zip}" usetimestamp="true"/>
+    <unzip src="${build.dir}/${jruby.download.zip}" dest="${build.dir}" overwrite="true"/>
+    <exec executable="cmd" osfamily="windows" dir="${build.dir}/jruby-${jruby.version}/bin">
+      <arg value="/c"/>
+      <arg value="jruby.bat"/>
+      <arg value="-Sgem"/>
+      <arg value="install"/>
+      <arg value="jsonpath"/>
+    </exec>
+    <exec executable="jruby" osfamily="unix" dir="${build.dir}/jruby-${jruby.version}/bin">
+      <arg value="-Sgem"/>
+      <arg value="install"/>
+      <arg value="jsonpath"/>
+    </exec>
+  </target>
+
+  <target name="compile" depends="prepare" description="Compile">
+    <javac source="${javac.target.version}" target="${javac.target.version}" destdir="${classes.build.dir}" srcdir="${src.dir}" debug="on" debuglevel="source,lines">
+      <classpath refid="main.classpath"/>
+    </javac>
+  </target>
+
+  <target name="jar.resources" depends="prepare">
+    <!-- build the manifest file -->
+    <adapter:create-manifest file="${build.dir}/Manifest.mf" title="${manifest.title}"/>
+
+  </target>
+
+
+  <target name="jar" depends="compile, jar.resources" description="Build a jar file">
+    <adapter:create-jar basedir="${classes.build.dir}" jarfile="${project.dist.dir}/${project.jar.name}" manifest="${build.dir}/Manifest.mf"  version-title="${manifest.title}"/>
+  </target>
+
+
+  <target name="javadoc" depends="prepare-ivy" description="Create javadocs">
+    <adapter:uml-javadoc-creator sourcepath="${src.dir}" destdir="${api.doc.dir}">
+      <groups>
+        <group title="Interlok/HPCC Integration" packages="com.adaptris.hpcc:com.adaptris.hpcc.*"/>
+      </groups>
+    </adapter:uml-javadoc-creator>
+    <copy todir="${api.doc.dir}">
+      <fileset dir="${api.img.dir}">
+        <include name="**/package.svg"/>
+        <include name="**/package.png"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- Perform a release -->
+  <target name="dist" depends="jar, javadoc" description="Create a distribution">
+    <mkdir dir="${build.tmp.dir}/dist/lib"/>
+    <mkdir dir="${project.dist.dir}"/>
+    <delete file="${dist.filename}"/>
+    <copy todir="${build.tmp.dir}/dist/lib" preservelastmodified="true" verbose="true">
+      <fileset dir="${project.dist.dir}">
+        <include name="${project.jar.name}" />
+      </fileset>
+    </copy>
+    <zip destfile="${dist.filename}">
+      <zipfileset dir="${build.tmp.dir}/dist/lib" prefix="lib"/>
+      <zipfileset dir="${api.doc.dir}" prefix="docs/${ant.project.name}/api"/>
+    </zip>
+  </target>
+
+  <target name="compile_tests" depends="compile, jar">
+    <mkdir dir="${testclasses.build.dir}"/>
+    <javac source="${javac.target.version}" target="${javac.target.version}" destdir="${testclasses.build.dir}" srcdir="${testsrc.dir}" debug="on" debuglevel="source,lines,vars">
+      <classpath id="classpath.compiletests">
+        <pathelement path="${classes.build.dir}"/>
+        <path refid="main.classpath"/>
+      </classpath>
+    </javac>
+    <!-- Source our test property files, relying on ant property immutability.
+      -->
+    <property file="${test.resources.dir}/unit-tests.properties.template"/>
+    <echoproperties destfile="${testclasses.build.dir}/unit-tests.properties" prefix="junit."/>
+    <replace file="${testclasses.build.dir}/unit-tests.properties" token="junit." value=""/>
+  </target>
+
+
+  <target name="init.tests" depends="compile_tests,prepare-jruby">
+    <!-- clean up old reports -->
+    <delete dir="${tests.output.dir}"/>
+    <mkdir dir="${tests.output.dir}"/>
+    <mkdir dir="${html.tests.output.dir}"/>
+    <adapter:copy-template src="${test.resources.dir}/log4j.properties.template" dest="${test.resources.dir}/log4j.properties"/>
+  </target>
+
+
+
+  <target name="test" depends="run-tests" description="run tests">
+    <adapter:test-reports basedir="${tests.output.dir}" reportdir="${html.tests.output.dir}"/>
+    <fail message="JUNIT tests failed, check output in ${tests.output.dir}" if="junit.failed"/>
+  </target>
+
+  <target name="run-tests" depends="init.tests">
+    <adapter:execute-tests printsummary="true" fork="yes" showoutput="no" forkmode="once"/>
+  </target>
+
+  <target name="test-no-reports" depends="run-tests" description="Run Tests with No reports">
+    <fail message="JUNIT tests failed, check output in ${tests.output.dir}" if="junit.failed"/>
+  </target>
+
+
+  <target name="example-xml.zip" depends="init" description="Build the example xml zip file">
+    <zip destfile = "${example-xml.doc.zip}" basedir="${example.xml}" />
+  </target>
+
+</project>
