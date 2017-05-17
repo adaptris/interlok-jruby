@@ -94,7 +94,8 @@
       <arg value="install"/>
       <arg value="jsonpath"/>
     </exec>
-    <exec executable="jruby" osfamily="unix" dir="${build.dir}/jruby-${jruby.version}/bin">
+    <exec executable="sh" osfamily="unix" dir="${build.dir}/jruby-${jruby.version}/bin">
+      <arg value="jruby"/>
       <arg value="-Sgem"/>
       <arg value="install"/>
       <arg value="jsonpath"/>
