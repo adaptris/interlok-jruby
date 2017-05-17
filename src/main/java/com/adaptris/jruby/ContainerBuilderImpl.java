@@ -15,6 +15,8 @@
  */
 package com.adaptris.jruby;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +29,7 @@ import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceException;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 public abstract class ContainerBuilderImpl implements ContainerBuilder {
 
@@ -43,6 +46,8 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   @InputFieldDefault(value = "THREADSAFE")
   @AdvancedConfig
   private LocalVariableBehavior variableBehaviour;
+  @XStreamImplicit(itemFieldName = "load-path")
+  private List<String> loadPaths;
 
   public ContainerBuilderImpl() {
     setContextScope(LocalContextScope.THREADSAFE);
@@ -101,5 +106,28 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
    */
   public void setVariableBehaviour(LocalVariableBehavior b) {
     this.variableBehaviour = b;
+  }
+
+  /**
+   * @return the loadPaths
+   */
+  public List<String> getLoadPaths() {
+    return loadPaths;
+  }
+
+  /**
+   * Set any additional directories that need to be added via {@code ScriptingContainer.setLoadPaths()}.
+   * 
+   * @param loadPaths the loadPaths to set
+   */
+  public void setLoadPaths(List<String> loadPaths) {
+    this.loadPaths = loadPaths;
+  }
+
+  public ContainerBuilderImpl withLoadPaths(String... strings) {
+    for (String s : strings) {
+      getLoadPaths().add(s);
+    }
+    return this;
   }
 }

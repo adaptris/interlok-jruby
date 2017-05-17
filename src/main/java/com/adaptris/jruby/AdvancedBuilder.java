@@ -42,8 +42,6 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
 
   @XStreamImplicit(itemFieldName = "gemdir")
   private List<String> gemdirs;
-  @XStreamImplicit(itemFieldName = "load-path")
-  private List<String> loadPaths;
 
 
   public AdvancedBuilder() {
@@ -97,28 +95,6 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
     return urls.toArray(new URL[gemdirs.size()]);
   }
 
-  /**
-   * @return the loadPaths
-   */
-  public List<String> getLoadPaths() {
-    return loadPaths;
-  }
-
-  /**
-   * Set any additional directories that need to be added via {@code ScriptingContainer.setLoadPaths()}.
-   * 
-   * @param loadPaths the loadPaths to set
-   */
-  public void setLoadPaths(List<String> loadPaths) {
-    this.loadPaths = loadPaths;
-  }
-
-  public AdvancedBuilder withLoadPaths(String... strings) {
-    for (String s : strings) {
-      getLoadPaths().add(s);
-    }
-    return this;
-  }
 
 
 }
