@@ -37,13 +37,13 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   @Valid
   @NotNull
   @AutoPopulated
-  @InputFieldDefault("TRANSIENT")
+  @InputFieldDefault("THREADSAFE")
   @AdvancedConfig
   private LocalContextScope contextScope;
   @Valid
   @NotNull
   @AutoPopulated
-  @InputFieldDefault(value = "THREADSAFE")
+  @InputFieldDefault(value = "TRANSIENT")
   @AdvancedConfig
   private LocalVariableBehavior variableBehaviour;
   @XStreamImplicit(itemFieldName = "load-path")
