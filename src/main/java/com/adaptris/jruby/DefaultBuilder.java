@@ -19,6 +19,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 
 import org.jruby.embed.ScriptingContainer;
 
+import com.adaptris.annotation.DisplayOrder;
 import com.adaptris.core.CoreException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -29,6 +30,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @config jruby-default-builder
  */
 @XStreamAlias("jruby-default-builder")
+@DisplayOrder(order = {"rubyHome", "loadPaths", "contextScope", "variableBehaviour"})
 public class DefaultBuilder extends ContainerBuilderImpl {
 
   private String rubyHome;
