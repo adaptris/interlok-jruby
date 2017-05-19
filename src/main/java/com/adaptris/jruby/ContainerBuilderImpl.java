@@ -15,6 +15,7 @@
  */
 package com.adaptris.jruby;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -28,7 +29,6 @@ import com.adaptris.annotation.AdvancedConfig;
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.CoreException;
-import com.adaptris.core.ServiceException;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 public abstract class ContainerBuilderImpl implements ContainerBuilder {
@@ -47,32 +47,26 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   @AdvancedConfig
   private LocalVariableBehavior variableBehaviour;
   @XStreamImplicit(itemFieldName = "load-path")
+  @NotNull
+  @AutoPopulated
   private List<String> loadPaths;
 
   public ContainerBuilderImpl() {
     setContextScope(LocalContextScope.THREADSAFE);
     setVariableBehaviour(LocalVariableBehavior.TRANSIENT);
+    setLoadPaths(new ArrayList<String>());
   }
 
 
   @Override
-  public ScriptingContainer build() throws ServiceException {
+  public ScriptingContainer build() throws CoreException {
+    if (container == null) {
+      container = new ScriptingContainer(getContextScope(), getVariableBehaviour());
+      container.setLoadPaths(getLoadPaths());
+      container = configure(container);
+    }
     return container;
   }
-
-  @Override
-  public void init() throws CoreException {
-    container = configure(new ScriptingContainer(getContextScope(), getVariableBehaviour()));
-  }
-
-  @Override
-  public void start() throws CoreException {}
-
-  @Override
-  public void stop() {}
-
-  @Override
-  public void close() {}
 
   protected abstract ScriptingContainer configure(ScriptingContainer c) throws CoreException;
 

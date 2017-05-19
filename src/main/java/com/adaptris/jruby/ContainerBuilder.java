@@ -17,11 +17,9 @@ package com.adaptris.jruby;
 
 import org.jruby.embed.ScriptingContainer;
 
-import com.adaptris.core.ComponentLifecycle;
-import com.adaptris.core.ServiceException;
+import com.adaptris.core.CoreException;
 
-;
-public interface ContainerBuilder extends ComponentLifecycle {
+public interface ContainerBuilder {
 
-  ScriptingContainer build() throws ServiceException;
+  ScriptingContainer build() throws CoreException;
 }

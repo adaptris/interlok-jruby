@@ -46,14 +46,12 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
 
   public AdvancedBuilder() {
     super();
-    setLoadPaths(new ArrayList<String>());
     setGemdirs(new ArrayList<String>());
   }
 
   protected ScriptingContainer configure(ScriptingContainer container) throws CoreException {
     try {
       container.addClassLoader(new URLClassLoader(toURL(getGemdirs())));
-      container.setLoadPaths(getLoadPaths());
     } catch (Exception e) {
       throw ExceptionHelper.wrapCoreException(e);
     }

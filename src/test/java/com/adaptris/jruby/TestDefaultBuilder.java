@@ -19,29 +19,17 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.adaptris.core.BaseCase;
-
 public class TestDefaultBuilder {
 
   @Test
   public void testBuild() throws Exception {
     DefaultBuilder b = new DefaultBuilder();
-    try {
-      BaseCase.start(b);
-      assertNotNull(b.build());
-    } finally {
-      BaseCase.stop(b);
-    }
+    assertNotNull(b.build());
   }
 
   @Test
   public void testBuild_WithHome() throws Exception {
-    DefaultBuilder b = new DefaultBuilder().withRubyHome("/tmp");
-    try {
-      BaseCase.start(b);
-      assertNotNull(b.build());
-    } finally {
-      BaseCase.stop(b);
-    }
+    DefaultBuilder b = new DefaultBuilder().withJrubyHome("/tmp");
+    assertNotNull(b.build());
   }
 }

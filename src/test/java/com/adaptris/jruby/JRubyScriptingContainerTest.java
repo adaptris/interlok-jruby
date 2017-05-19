@@ -18,6 +18,8 @@ package com.adaptris.jruby;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jruby.embed.PathType;
+
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.ServiceCase;
@@ -25,6 +27,7 @@ import com.adaptris.core.ServiceCase;
 public class JRubyScriptingContainerTest extends ServiceCase {
 
   public static final String KEY_TEST_SCRIPT = "jruby.script";
+  public static final String KEY_LIFECYCLE_SCRIPT = "jruby.lifecycle.script";
   public static final String KEY_JRUBY_HOME = "jruby.dir";
 
   public JRubyScriptingContainerTest(String name) {
@@ -35,10 +38,34 @@ public class JRubyScriptingContainerTest extends ServiceCase {
 
   public void tearDown() throws Exception {}
 
+  public void testIsBranching() throws Exception {
+
+    JRubyScriptingContainer service = new JRubyScriptingContainer();
+    assertFalse(service.isBranching());
+    service.setBranchingEnabled(true);
+    assertTrue(service.isBranching());
+    service.setBranchingEnabled(null);
+    assertFalse(service.isBranching());
+  }
+
   public void testScript_DefaultBuilder() throws Exception {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
-    service.setScriptFilename(PROPERTIES.getProperty(KEY_TEST_SCRIPT));
-    service.setBuilder(new DefaultBuilder().withRubyHome(PROPERTIES.getProperty(KEY_JRUBY_HOME)));
+    service.setServiceScript(new ScriptWrapper(PathType.ABSOLUTE, PROPERTIES.getProperty(KEY_TEST_SCRIPT)));
+    service.setBuilder(new DefaultBuilder().withJrubyHome(PROPERTIES.getProperty(KEY_JRUBY_HOME)));
+    AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance().newMessage();
+    execute(service, msg);
+    assertEquals("[\"bar\"]", msg.getContent());
+  }
+
+  public void testScript_WithLifecycleScripts() throws Exception {
+    JRubyScriptingContainer service = new JRubyScriptingContainer();
+
+    service.setInitScript(new ScriptWrapper(PROPERTIES.getProperty(KEY_LIFECYCLE_SCRIPT)));
+    service.setStartScript(new ScriptWrapper(PROPERTIES.getProperty(KEY_LIFECYCLE_SCRIPT)));
+    service.setStopScript(new ScriptWrapper(PROPERTIES.getProperty(KEY_LIFECYCLE_SCRIPT)));
+    service.setCloseScript(new ScriptWrapper(PROPERTIES.getProperty(KEY_LIFECYCLE_SCRIPT)));
+    service.setServiceScript(new ScriptWrapper(PROPERTIES.getProperty(KEY_TEST_SCRIPT)));
+    service.setBuilder(new DefaultBuilder().withJrubyHome(PROPERTIES.getProperty(KEY_JRUBY_HOME)));
     AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance().newMessage();
     execute(service, msg);
     assertEquals("[\"bar\"]", msg.getContent());
@@ -46,14 +73,14 @@ public class JRubyScriptingContainerTest extends ServiceCase {
 
   private JRubyScriptingContainer createService(ContainerBuilder b) {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
-    service.setScriptFilename("/path/to/my.rb");
+    service.setServiceScript(new ScriptWrapper("/path/to/my.rb"));
     service.setBuilder(b);
     return service;
   }
 
   @Override
   protected List retrieveObjectsForSampleConfig() {
-    return Arrays.asList(new JRubyScriptingContainer[] {createService(new DefaultBuilder().withRubyHome("/path/to/jruby")),
+    return Arrays.asList(new JRubyScriptingContainer[] {createService(new DefaultBuilder().withJrubyHome("/path/to/jruby")),
         createService(new AdvancedBuilder().withGemdirs("/path/to/gems", "/path/to/specifications")
             .withLoadPaths("/path/to/loaddir1", "/path/to/loaddir2"))});
   }

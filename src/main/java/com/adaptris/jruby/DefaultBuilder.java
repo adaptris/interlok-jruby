@@ -33,33 +33,33 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @DisplayOrder(order = {"rubyHome", "loadPaths", "contextScope", "variableBehaviour"})
 public class DefaultBuilder extends ContainerBuilderImpl {
 
-  private String rubyHome;
+  private String jrubyHome;
 
   public DefaultBuilder() {
 
   }
 
-  public DefaultBuilder withRubyHome(String s) {
-    setRubyHome(s);
+  public DefaultBuilder withJrubyHome(String s) {
+    setJrubyHome(s);
     return this;
   }
 
   /**
    * @return the jrubyHomeDir
    */
-  public String getRubyHome() {
-    return rubyHome;
+  public String getJrubyHome() {
+    return jrubyHome;
   }
 
   /**
    * @param d the jrubyHomeDir to set
    */
-  public void setRubyHome(String d) {
-    this.rubyHome = d;
+  public void setJrubyHome(String d) {
+    this.jrubyHome = d;
   }
 
   protected ScriptingContainer configure(ScriptingContainer container) throws CoreException {
-    String home = getRubyHome();
+    String home = getJrubyHome();
     if (!isBlank(home)) {
       container.setHomeDirectory(home);
     }
