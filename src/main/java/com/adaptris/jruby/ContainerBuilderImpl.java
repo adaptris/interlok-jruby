@@ -112,10 +112,10 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   /**
    * Set any additional directories that need to be added via {@code ScriptingContainer.setLoadPaths()}.
    * 
-   * @param loadPaths the loadPaths to set
+   * @param paths the loadPaths to set
    */
-  public void setLoadPaths(List<String> loadPaths) {
-    this.loadPaths = loadPaths;
+  public void setLoadPaths(List<String> paths) {
+    this.loadPaths = paths;
   }
 
   public ContainerBuilderImpl withLoadPaths(String... strings) {
