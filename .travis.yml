@@ -1,0 +1,28 @@
+language: java
+sudo: required
+dist: trusty
+
+before_install:
+  - sudo service haveged start
+
+script: ant -Divy.logging=default compile
+
+jdk:
+  - oraclejdk8
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+      - haveged
+
+cache:
+  directories:
+    - $HOME/.ivy2
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - develop
