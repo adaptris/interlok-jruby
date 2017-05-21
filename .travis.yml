@@ -15,6 +15,7 @@ addons:
     packages:
       - oracle-java8-installer
       - haveged
+      - bash-builtins
 
 cache:
   directories:
