@@ -5,7 +5,7 @@ dist: trusty
 before_install:
   - sudo service haveged start
 
-script: ant -Divy.logging=default compile
+script: ant -Divy.logging=default test-no-reports
 
 jdk:
   - oraclejdk8
