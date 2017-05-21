@@ -21,6 +21,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.jruby.RubyInstanceConfig.CompileMode;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.ScriptingContainer;
@@ -46,15 +47,23 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   @InputFieldDefault(value = "TRANSIENT")
   @AdvancedConfig
   private LocalVariableBehavior variableBehaviour;
+  @Valid
+  @NotNull
+  @AutoPopulated
+  @InputFieldDefault(value = "JIT")
+  @AdvancedConfig
+  private CompileMode compileMode;
   @XStreamImplicit(itemFieldName = "load-path")
   @NotNull
   @AutoPopulated
   private List<String> loadPaths;
 
+
   public ContainerBuilderImpl() {
     setContextScope(LocalContextScope.THREADSAFE);
     setVariableBehaviour(LocalVariableBehavior.TRANSIENT);
     setLoadPaths(new ArrayList<String>());
+    setCompileMode(CompileMode.JIT);
   }
 
 
@@ -62,6 +71,7 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   public ScriptingContainer build() throws CoreException {
     if (container == null) {
       container = new ScriptingContainer(getContextScope(), getVariableBehaviour());
+      container.setCompileMode(getCompileMode());
       container.setLoadPaths(getLoadPaths());
       container = configure(container);
     }
@@ -123,5 +133,21 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
       getLoadPaths().add(s);
     }
     return this;
+  }
+
+
+  /**
+   * @return the compileMode
+   */
+  public CompileMode getCompileMode() {
+    return compileMode;
+  }
+
+
+  /**
+   * @param m the compileMode to set; default is {@code JIT}
+   */
+  public void setCompileMode(CompileMode m) {
+    this.compileMode = m;
   }
 }

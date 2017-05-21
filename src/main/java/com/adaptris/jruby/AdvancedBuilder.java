@@ -37,7 +37,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  *
  */
 @XStreamAlias("jruby-advanced-builder")
-@DisplayOrder(order = {"gemdirs", "loadPaths", "contextScope", "variableBehaviour"})
+@DisplayOrder(order = {"gemdirs", "loadPaths", "contextScope", "variableBehaviour", "compileMode"})
 public class AdvancedBuilder extends ContainerBuilderImpl {
 
   @XStreamImplicit(itemFieldName = "gemdir")

@@ -30,7 +30,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @config jruby-default-builder
  */
 @XStreamAlias("jruby-default-builder")
-@DisplayOrder(order = {"rubyHome", "loadPaths", "contextScope", "variableBehaviour"})
+@DisplayOrder(order = {"rubyHome", "loadPaths", "contextScope", "variableBehaviour", "compileMode"})
 public class DefaultBuilder extends ContainerBuilderImpl {
 
   private String jrubyHome;
