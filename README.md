@@ -1,4 +1,4 @@
-# interlok-jruby [![Build Status](https://travis-ci.org/adaptris/interlok-jruby.svg?branch=master)](https://travis-ci.org/adaptris/interlok-jruby)
+# interlok-jruby [![Build Status](https://travis-ci.org/adaptris/interlok-jruby.svg?branch=develop)](https://travis-ci.org/adaptris/interlok-jruby)
 
 Use Interlok+JRuby Embed rather than JSR223; and in doing so, allow us to configure ScriptingContainer a bit more than having to use system properties for everything.
 
