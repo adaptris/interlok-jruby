@@ -5,7 +5,10 @@ dist: trusty
 before_install:
   - sudo service haveged start
 
-script: ant -Divy.logging=default test-no-reports
+script: ant -Divy.logging=default test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 jdk:
   - oraclejdk8
