@@ -20,6 +20,7 @@ addons:
       - oracle-java8-unlimited-jce-policy
       - haveged
       - bash-builtins
+      - ant-optional
 
 cache:
   apt: true
