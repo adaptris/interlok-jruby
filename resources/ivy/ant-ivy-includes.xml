@@ -17,6 +17,9 @@
     -->
     <property name="signjar.tsa.url" value="https://timestamp.geotrust.com/tsa"/>
 
+    <property name="interlok-api.javadoc.url" value="https://development.adaptris.net/javadocs/latest/Interlok-API/"/>
+    <property name="interlok-common.javadoc.url" value="https://development.adaptris.net/javadocs/latest/Interlok-Common/"/>
+    
     <!-- Default publish type is "JAR" -->
     <property name="ivy.publish.bundle.type" value="jar"/>
     <property name="ivy.report.dir" value="${build.dir}/ivy-report"/>
@@ -145,6 +148,39 @@
       </sequential>
     </macrodef>
 
+    <macrodef name="get-offline-javadocs" uri="uri:adapter">
+      <attribute name="destdir" default="${build.dir}/offline-javadocs"/>
+      <sequential>
+        <mkdir dir="@{destdir}"/>
+        <ivy:retrieve pattern="@{destdir}/[artifact].[ext]" organisation="com.adaptris" conf="javadoc" type="javadoc" log="${ivy.logging}"/>
+        <if>
+          <and>
+            <available file="@{destdir}/adp-core.jar"/>
+            <available file="@{destdir}/interlok-common.jar"/>
+          </and>
+          <then>
+            <mkdir dir="@{destdir}/interlok-common"/>
+            <mkdir dir="@{destdir}/adp-core"/>
+            <unzip src="@{destdir}/adp-core.jar" dest="@{destdir}/adp-core">
+              <patternset>
+                <include name="**/package-list"/>
+              </patternset>
+            </unzip>
+            <unzip src="@{destdir}/interlok-common.jar" dest="@{destdir}/interlok-common">
+              <patternset>
+                <include name="**/package-list"/>
+              </patternset>
+            </unzip>
+            <property name="offline.javadocs.available" value="true"/>
+          </then>
+          <else>
+            <property name="offline.javadocs.available" value="false"/>
+          </else>
+        </if>
+      </sequential>
+    </macrodef>
+
+    
     <macrodef name="create-javadocs" uri="uri:adapter">
       <attribute name="destdir" default="${api.doc.dir}"/>
       <attribute name="sourcepath" default="${src.dir}"/>
@@ -152,6 +188,8 @@
       <element name="grouping" optional="true"/>
       <element name="packageset-filter" optional="true"/>
       <sequential>
+        <adapter:get-offline-javadocs/>
+      
         <javadoc author="false" destdir="@{destdir}"
           windowtitle="Interlok Adapter Framework API" bottom="Copyright Adaptris"
           access="protected" breakiterator="yes" verbose="no"
@@ -170,8 +208,8 @@
           </classpath>
           <custom-doclet/>
           <grouping/>
-          <link offline="false" href="https://development.adaptris.net/javadocs/v3-snapshot/Interlok-API/"/>
-          <link offline="false" href="https://development.adaptris.net/javadocs/v3-snapshot/Interlok-Common/"/>
+          <link offline="${offline.javadocs.available}" href="${interlok-api.javadoc.url}" packagelistLoc="${build.dir}/offline-javadocs/adp-core"/>
+          <link offline="${offline.javadocs.available}" href="${interlok-common.javadoc.url}" packagelistLoc="${build.dir}/offline-javadocs/interlok-common"/>
           <taglet name="com.adaptris.taglet.ConfigTaglet">
             <path refid="classpath.ant-tools"/>
           </taglet>
