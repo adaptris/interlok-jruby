@@ -41,7 +41,7 @@
 
     <!-- For Various ANT Tasks -->
     <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="ant->default" transitive="false"/>
-    <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.7.7.201606060606" conf="ant->default"/>
+    <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.7.9" conf="ant->default"/>
     <dependency org="nl.talsmasoftware" name="umldoclet" rev="1.0.3" conf="ant->default"/>
     <dependency org="net.sourceforge.plantuml" name="plantuml" rev="8046" conf="ant->default"/>
 
