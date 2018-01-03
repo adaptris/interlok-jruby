@@ -429,7 +429,7 @@
         <jacoco:coverage  destfile="${coverage.metadata.file}">
           <junit printsummary="@{printsummary}" fork="@{fork}" forkmode="@{forkmode}" showoutput="@{showoutput}" failureproperty="junit.failed">
             <jvmarg value="-Xmx${execution.maxmem}"/>
-            <jvmarg value="-XX:-UseSplitVerifier"/>
+            <jvmarg value="-noverify"/>
             <jvmarg value="-XX:+CMSClassUnloadingEnabled"/>
             <jvmarg value="-XX:+UseConcMarkSweepGC"/>
             <jvmarg value="-XX:+UseParNewGC"/>
@@ -465,7 +465,7 @@
       <sequential>
         <junit printsummary="@{printsummary}" fork="@{fork}" forkmode="@{forkmode}" showoutput="@{showoutput}" failureproperty="junit.failed">
           <jvmarg value="-Xmx${execution.maxmem}"/>
-          <jvmarg value="-XX:-UseSplitVerifier"/>
+          <jvmarg value="-noverify"/>
           <jvmarg value="-XX:+CMSClassUnloadingEnabled"/>
           <jvmarg value="-XX:+UseConcMarkSweepGC"/>
           <jvmarg value="-XX:+UseParNewGC"/>
