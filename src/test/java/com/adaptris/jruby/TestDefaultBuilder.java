@@ -15,8 +15,11 @@
  */
 package com.adaptris.jruby;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
+import org.jruby.embed.ScriptingContainer;
 import org.junit.Test;
 
 public class TestDefaultBuilder {
@@ -32,4 +35,22 @@ public class TestDefaultBuilder {
     DefaultBuilder b = new DefaultBuilder().withJrubyHome("/tmp");
     assertNotNull(b.build());
   }
+
+  @Test
+  public void testTerminate_IsEqual() throws Exception {
+    DefaultBuilder b = new DefaultBuilder();
+    ScriptingContainer c = b.build();
+    b.terminate(c);
+    b.terminate(null);
+    assertNotSame(c, b.build());
+  }
+
+  @Test
+  public void testTerminate_NotEqual() throws Exception {
+    DefaultBuilder b = new DefaultBuilder();
+    ScriptingContainer c = b.build();
+    b.terminate(new ScriptingContainer());
+    assertEquals(c, b.build());
+  }
+
 }
