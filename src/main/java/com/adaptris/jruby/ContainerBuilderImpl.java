@@ -78,6 +78,16 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
     return container;
   }
 
+  @Override
+  public void terminate(ScriptingContainer c) {
+    if (c != null) {
+      c.terminate();
+      if (container == c) {
+        container = null;
+      }
+    }
+  }
+
   protected abstract ScriptingContainer configure(ScriptingContainer c) throws CoreException;
 
   /**
