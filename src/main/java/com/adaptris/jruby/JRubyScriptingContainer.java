@@ -110,6 +110,7 @@ public class JRubyScriptingContainer extends ServiceImp implements DynamicPollin
   @Override
   protected void closeService() {
     executeQuietly(getCloseScript());
+    destroy();
   }
 
 
@@ -256,10 +257,17 @@ public class JRubyScriptingContainer extends ServiceImp implements DynamicPollin
       if (s != null) {
         container.put("log", log);
         container.runScriptlet(s.getPathType(), s.getLocation());
-      }
+      }      
     } catch (Throwable e) {
       throw ExceptionHelper.wrapCoreException(e);
     }
   }
 
+  private void destroy() {
+    try {
+      getBuilder().terminate(getBuilder().build());
+    } catch (Exception e) {
+      
+    }
+  }
 }

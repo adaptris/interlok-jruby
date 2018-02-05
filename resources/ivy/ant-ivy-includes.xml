@@ -429,7 +429,7 @@
         <jacoco:coverage  destfile="${coverage.metadata.file}">
           <junit printsummary="@{printsummary}" fork="@{fork}" forkmode="@{forkmode}" showoutput="@{showoutput}" failureproperty="junit.failed">
             <jvmarg value="-Xmx${execution.maxmem}"/>
-            <jvmarg value="-XX:-UseSplitVerifier"/>
+            <jvmarg value="-noverify"/>
             <jvmarg value="-XX:+CMSClassUnloadingEnabled"/>
             <jvmarg value="-XX:+UseConcMarkSweepGC"/>
             <jvmarg value="-XX:+UseParNewGC"/>
@@ -465,7 +465,7 @@
       <sequential>
         <junit printsummary="@{printsummary}" fork="@{fork}" forkmode="@{forkmode}" showoutput="@{showoutput}" failureproperty="junit.failed">
           <jvmarg value="-Xmx${execution.maxmem}"/>
-          <jvmarg value="-XX:-UseSplitVerifier"/>
+          <jvmarg value="-noverify"/>
           <jvmarg value="-XX:+CMSClassUnloadingEnabled"/>
           <jvmarg value="-XX:+UseConcMarkSweepGC"/>
           <jvmarg value="-XX:+UseParNewGC"/>
@@ -582,6 +582,9 @@
         <zip destfile="${project.dist.dir}/${project.name}/examples/${project.name}-examples.zip">
           <zipfileset dir="${example-xml.build.dir}" prefix="example-xml/optional/${ant.project.name}"/>
         </zip>
+        <jar jarfile="${project.dist.dir}/${project.name}/examples/${project.name}.jar">
+          <fileset dir="${example-xml.build.dir}"/>
+        </jar>        
       </then>
     </if>
     <ivy:makepom ivyfile="${ivy.xml.file}" pomfile="${project.dist.dir}/${project.name}/pom/${project.name}.pom" description="${project.pom.description}"  conf="default,master,compile,provided,runtime,test,system,sources,javadoc,optional"/>

@@ -22,4 +22,7 @@ import com.adaptris.core.CoreException;
 public interface ContainerBuilder {
 
   ScriptingContainer build() throws CoreException;
+
+  void terminate(ScriptingContainer c);
+
 }

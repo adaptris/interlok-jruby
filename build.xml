@@ -9,9 +9,10 @@
 
   <target name="init">
 
-    <property name="ivy.publish.revision" value="3.6-SNAPSHOT"/>  <!-- Version number of this artifact -->
-    <property name="adp-core-version" value="3.6-SNAPSHOT"/>
-    <property name="jruby.version" value="9.1.8.0"/>
+    <property name="ivy.publish.revision" value="3.7-SNAPSHOT"/>  <!-- Version number of this artifact -->
+    <property name="adp-core-version" value="3.7-SNAPSHOT"/>
+    <!-- Defined in ivy.properties! -->
+    <property name="jruby.version" value="9.1.15.0"/>
     <property name="jruby.download.zip" value="jruby-bin-${jruby.version}.zip"/>
     <property name="jruby.download.url" value="https://s3.amazonaws.com/jruby.org/downloads/${jruby.version}/${jruby.download.zip}"/>
     <property name="manifest.title" value="Interlok/JRuby Integration"/>
