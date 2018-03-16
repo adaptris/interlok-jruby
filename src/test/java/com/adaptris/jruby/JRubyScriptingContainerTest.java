@@ -19,10 +19,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jruby.embed.PathType;
+import org.jruby.embed.ScriptingContainer;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
+import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceCase;
+import com.adaptris.core.util.LifecycleHelper;
 
 public class JRubyScriptingContainerTest extends ServiceCase {
 
@@ -71,6 +74,28 @@ public class JRubyScriptingContainerTest extends ServiceCase {
     assertEquals("[\"bar\"]", msg.getContent());
   }
 
+  public void testStart() throws Exception {
+    JRubyScriptingContainer service = new JRubyScriptingContainer();
+    service.setBuilder(new BrokenBuilder(BrokenBuilder.WhenToBreak.FIRST_BUILD_SUCCESSFUL));
+    try {
+      LifecycleHelper.initAndStart(service);
+      fail();
+    }
+    catch (CoreException expected) {
+      LifecycleHelper.stopAndClose(service);
+    }
+  }
+
+  public void testTerminate() throws Exception {
+    JRubyScriptingContainer service = new JRubyScriptingContainer();
+    service.setBuilder(new BrokenBuilder(BrokenBuilder.WhenToBreak.TERMINATE));
+    LifecycleHelper.initAndStart(service);
+    LifecycleHelper.stopAndClose(service);
+    service.setBuilder(new DefaultBuilder());
+    LifecycleHelper.initAndStart(service);
+    LifecycleHelper.stopAndClose(service);
+  }
+
   private JRubyScriptingContainer createService(ContainerBuilder b) {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
     service.setServiceScript(new ScriptWrapper("/path/to/my.rb"));
@@ -94,5 +119,41 @@ public class JRubyScriptingContainerTest extends ServiceCase {
   @Override
   protected String createBaseFileName(Object object) {
     return super.createBaseFileName(object) + "-" + ((JRubyScriptingContainer) object).getBuilder().getClass().getSimpleName();
+  }
+  
+  private static class BrokenBuilder extends DefaultBuilder {
+
+    public static enum WhenToBreak {
+      BUILD, TERMINATE, BOTH, FIRST_BUILD_SUCCESSFUL
+    };
+
+    private transient WhenToBreak whenToBreak;
+
+    private transient int buildCount = 0;
+
+    public BrokenBuilder(WhenToBreak b) {
+      whenToBreak = b;
+    }
+
+    @Override
+    public ScriptingContainer build() throws CoreException {
+      if (whenToBreak == WhenToBreak.BUILD || whenToBreak == WhenToBreak.BOTH) {
+        throw new CoreException("I'm Broken");
+      }
+      if (buildCount >= 1 && whenToBreak == WhenToBreak.FIRST_BUILD_SUCCESSFUL) {
+        throw new CoreException("I'm Broken");
+      }
+      buildCount++;
+      return super.build();
+    }
+
+    @Override
+    public void terminate(ScriptingContainer c) {
+      if (whenToBreak == WhenToBreak.TERMINATE || whenToBreak == WhenToBreak.BOTH) {
+        throw new RuntimeException("I'm Broken");
+      }
+      super.terminate(c);
+    }
+    
   }
 }

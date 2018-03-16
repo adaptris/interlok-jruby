@@ -82,7 +82,7 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   public void terminate(ScriptingContainer c) {
     if (c != null) {
       c.terminate();
-      if (container == c) {
+      if (container == c) {// Actually Codacy, this is wholly intentional. .equals() != ==
         container = null;
       }
     }
