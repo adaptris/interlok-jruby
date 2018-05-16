@@ -1,5 +1,7 @@
 // This is not used at all to do builds, but is here
 // so that our dependencies can be tracked by snyk
+defaultTasks 'ant-test'
+
 ext {
   adpCoreVersion = project.hasProperty('adpCoreVersion') ? project.getProperty('adpCoreVersion') : '3.7-SNAPSHOT'
   repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
@@ -37,6 +39,7 @@ repositories {
 
 configurations {
   javadoc {}
+  junitAnt
   all*.exclude group: 'c3p0'
   all*.exclude group: 'commons-logging'
   all*.exclude group: 'javamail'
@@ -60,7 +63,7 @@ dependencies {
   compile ("org.jruby:jruby:9.1.15.0")
   compile ("org.slf4j:slf4j-api:1.7.24")
 
-  testCompile ('junit:junit:4.11')
+  testCompile ('junit:junit:4.12')
   testCompile ("com.adaptris:adp-stubs:$adpCoreVersion") { changing= true}
   testCompile ("org.apache.logging.log4j:log4j-core:2.9.1")
   testCompile ("org.apache.logging.log4j:log4j-1.2-api:2.9.1")
@@ -69,6 +72,21 @@ dependencies {
   testCompile ("org.mockito:mockito-all:1.9.5")
 
   javadoc("com.adaptris:adp-core-apt:$adpCoreVersion") { changing= true}
+  junitAnt 'junit:junit:4.12'
+  junitAnt('org.apache.ant:ant-junit:1.9.6') {
+    transitive = false
+  }
+  junitAnt('org.apache.ant:ant-junit4:1.9.6') {
+    transitive = false
+  }
 
 }
 
+// Because gradle ships with its own copy of ant, let's shim its classloader with
+// the required junit dependencies...
+ClassLoader antClassLoader = org.apache.tools.ant.Project.class.classLoader
+configurations.junitAnt.each { File f -> antClassLoader.addURL(f.toURI().toURL()) }
+
+ant.importBuild('build.xml') { antTargetName ->
+    'ant-' + antTargetName
+}
