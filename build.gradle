@@ -1,0 +1,74 @@
+// This is not used at all to do builds, but is here
+// so that our dependencies can be tracked by snyk
+ext {
+  adpCoreVersion = project.hasProperty('adpCoreVersion') ? project.getProperty('adpCoreVersion') : '3.7-SNAPSHOT'
+  repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
+  repoPassword = project.hasProperty('repoPassword') ? project.getProperty('repoPassword') : 'unknown'
+  defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+  allprojects {
+    tasks.withType(Javadoc) {
+      options.addStringOption('Xdoclint:none', '-quiet')
+    }
+  }
+}
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+  maven { url "$defaultNexusRepo" }
+  maven { url "https://development.adaptris.net/nexus/content/groups/public" }
+  maven {
+    credentials {
+      username repoUsername
+      password repoPassword
+    }
+    url "https://development.adaptris.net/nexus/content/groups/private"
+  }
+  maven { url "https://development.adaptris.net/nexus/content/repositories/snapshots" }
+  maven { url "https://development.adaptris.net/nexus/content/repositories/releases" }
+}
+
+
+configurations {
+  javadoc {}
+  all*.exclude group: 'c3p0'
+  all*.exclude group: 'commons-logging'
+  all*.exclude group: 'javamail'
+  all*.exclude group: 'javax.mail', module: 'mail'
+  all*.exclude group: 'org.glassfish.hk2.external'
+  all*.exclude group: 'xalan', module: 'xalan'
+  all*.exclude group: 'net.sf.saxon', module: 'saxon'
+  all*.exclude group: 'org.codehaus.woodstox'
+  all*.exclude group: 'com.fasterxml.woodstox'
+  all*.exclude group: 'org.eclipse.jetty.orbit', module: 'javax.mail.glassfish'
+}
+
+configurations.all {
+  resolutionStrategy.cacheChangingModulesFor 0, "seconds"
+}
+
+dependencies {
+  compile ("com.adaptris:adp-core-apt:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-common:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:adp-core:$adpCoreVersion") { changing= true}
+  compile ("org.jruby:jruby:9.1.15.0")
+  compile ("org.slf4j:slf4j-api:1.7.24")
+
+  testCompile ('junit:junit:4.11')
+  testCompile ("com.adaptris:adp-stubs:$adpCoreVersion") { changing= true}
+  testCompile ("org.apache.logging.log4j:log4j-core:2.9.1")
+  testCompile ("org.apache.logging.log4j:log4j-1.2-api:2.9.1")
+  testCompile ("org.apache.logging.log4j:log4j-slf4j-impl:2.9.1")
+  testCompile ("org.apache.logging.log4j:log4j-api:2.9.1")
+  testCompile ("org.mockito:mockito-all:1.9.5")
+
+  javadoc("com.adaptris:adp-core-apt:$adpCoreVersion") { changing= true}
+
+}
+
