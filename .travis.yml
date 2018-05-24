@@ -5,6 +5,7 @@ dist: trusty
 before_install:
   - sudo service haveged start
 
+install: ant -version
 script: ant -Divy.logging=default test
 
 after_success:
