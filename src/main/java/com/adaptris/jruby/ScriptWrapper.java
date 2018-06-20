@@ -78,7 +78,7 @@ public class ScriptWrapper {
   }
 
   /**
-   * @param type the pathType to set, defaults to {@link PathType.ABSOLUTE}.
+   * @param type the pathType to set, defaults to {@link PathType#ABSOLUTE} if not specified.
    */
   public void setPathType(PathType type) {
     this.pathType = type;

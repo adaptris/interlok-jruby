@@ -27,6 +27,7 @@ import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.annotation.DisplayOrder;
 import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.AdaptrisMessage;
+import com.adaptris.core.ComponentLifecycle;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.DynamicPollingTemplate;
 import com.adaptris.core.ServiceException;
@@ -171,7 +172,7 @@ public class JRubyScriptingContainer extends ServiceImp implements DynamicPollin
   }
 
   /**
-   * Set the script to be executed upon {@link Service#init()}.
+   * Set the script to be executed upon {@link ComponentLifecycle#init()}.
    * 
    * @param s the initScript to set
    */
@@ -187,7 +188,7 @@ public class JRubyScriptingContainer extends ServiceImp implements DynamicPollin
   }
 
   /**
-   * Set the script to be executed upon {@link Service#start()}.
+   * Set the script to be executed upon {@link ComponentLifecycle#start()}.
    * 
    * @param s the startScript to set
    */
@@ -203,7 +204,7 @@ public class JRubyScriptingContainer extends ServiceImp implements DynamicPollin
   }
 
   /**
-   * Set the script to be executed upon {@link Service#stop()}.
+   * Set the script to be executed upon {@link ComponentLifecycle#stop()}.
    * 
    * @param s the stopScript to set
    */
@@ -220,7 +221,7 @@ public class JRubyScriptingContainer extends ServiceImp implements DynamicPollin
   }
 
   /**
-   * Set the script to be executed upon {@link Service#close()}.
+   * Set the script to be executed upon {@link ComponentLifecycle#close()}.
    * 
    * @param s the closeScript to set
    */
