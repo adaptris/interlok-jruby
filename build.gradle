@@ -114,7 +114,7 @@ task configureJRuby {
       arg(value: "install")
       arg(value: "jsonpath")
     }
-    ant.exec(executable: "cmd", osfamily: "unix", dir: jrubyBinDir) {
+    ant.exec(executable: "bash", osfamily: "unix", dir: jrubyBinDir) {
       arg(value: "jruby")
       arg(value: "-Sgem")
       arg(value: "install")
@@ -127,7 +127,6 @@ task copyUnitTestProperties(type: Copy) {
     delete file('src/test/resources/unit-tests.properties')
     from file('src/test/resources/unit-tests.properties.template')
     into ('src/test/resources/')
-    duplicatesStrategy('include')
     rename { String fileName ->
       fileName.replace('unit-tests.properties.template', 'unit-tests.properties')
     }
