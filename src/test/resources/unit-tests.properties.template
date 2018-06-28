@@ -1,6 +1,6 @@
-junit.ProducerCase.baseDir=${basedir}/build/example-xml/producers
-junit.ConsumerCase.baseDir=${basedir}/build/example-xml/consumers
-junit.ServiceCase.baseDir=${basedir}/build/example-xml/services
-junit.jruby.dir=${basedir}/build/jruby-${jruby.version}
-junit.jruby.script=${basedir}/src/test/resources/myjsonpath.rb
-junit.jruby.lifecycle.script=${basedir}/src/test/resources/lifecycle.rb
+ProducerCase.baseDir=./build/example-xml/producers
+ConsumerCase.baseDir=./build/example-xml/consumers
+ServiceCase.baseDir=./build/example-xml/services
+jruby.dir=./build/jruby-@jrubyVersion@
+jruby.script=./src/test/resources/myjsonpath.rb
+jruby.lifecycle.script=./src/test/resources/lifecycle.rb
