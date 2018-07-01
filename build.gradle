@@ -101,8 +101,8 @@ sourceSets {
 
 task configureJRuby {
   doLast {
-    def jrubyZipFile = "jruby-bin-" + jrubyVersion + ".zip"
-    def jrubyUrl = "https://s3.amazonaws.com/jruby.org/downloads/" + jrubyVersion + "/" + jrubyZipFile
+    def jrubyZipFile = "jruby-dist-" + jrubyVersion + "-bin.zip"
+    def jrubyUrl = "https://repo1.maven.org/maven2/org/jruby/jruby-dist/" + jrubyVersion + "/" + jrubyZipFile
     def downloadDest = project.buildDir.getCanonicalPath() + "/" + jrubyZipFile
     def jrubyBinDir =  project.buildDir.getCanonicalPath() + "/jruby-" + jrubyVersion + "/bin"
     ant.get(src: jrubyUrl, dest: downloadDest, usetimestamp: true)
