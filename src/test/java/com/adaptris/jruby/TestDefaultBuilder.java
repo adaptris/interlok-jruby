@@ -19,6 +19,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
+import org.jruby.RubyInstanceConfig.CompileMode;
+import org.jruby.embed.LocalContextScope;
+import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.ScriptingContainer;
 import org.junit.Test;
 
@@ -26,7 +29,8 @@ public class TestDefaultBuilder {
 
   @Test
   public void testBuild() throws Exception {
-    DefaultBuilder b = new DefaultBuilder();
+    DefaultBuilder b = new DefaultBuilder().withCompileMode(CompileMode.JIT).withContextScope(LocalContextScope.THREADSAFE)
+        .withVariableBehaviour(LocalVariableBehavior.TRANSIENT);
     assertNotNull(b.build());
   }
 

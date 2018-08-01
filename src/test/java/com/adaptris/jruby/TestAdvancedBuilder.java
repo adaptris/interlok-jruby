@@ -43,7 +43,7 @@ public class TestAdvancedBuilder extends BaseCase {
     String gemspecdir = String.format("%s/%s", jrubyhome, PATH_TO_SPECS);
     String gemdir = String.format("%s/%s", jrubyhome, PATH_TO_GEMS);
 
-    AdvancedBuilder b = new AdvancedBuilder().withGemdirs(gemspecdir, gemdir);
+    AdvancedBuilder b = new AdvancedBuilder().withGemdirs(gemspecdir, gemdir).withAddSubdirs(true);
     assertNotNull(b.build());
   }
 
@@ -53,7 +53,7 @@ public class TestAdvancedBuilder extends BaseCase {
     String d1 = String.format("%s/%s", jrubyhome, PATH_TO_SPECS);
     String d2 = String.format("%s/%s", jrubyhome, PATH_TO_GEMS);
 
-    ContainerBuilderImpl b = new AdvancedBuilder().withLoadPaths(d1, d2);
+    AdvancedBuilder b = new AdvancedBuilder().withLoadPaths(d1, d2);
     assertNotNull(b.build());
   }
 }

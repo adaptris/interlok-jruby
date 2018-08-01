@@ -20,11 +20,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.jruby.embed.ScriptingContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adaptris.annotation.DisplayOrder;
+import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.util.ExceptionHelper;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -37,12 +43,15 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  *
  */
 @XStreamAlias("jruby-advanced-builder")
-@DisplayOrder(order = {"gemdirs", "loadPaths", "contextScope", "variableBehaviour", "compileMode"})
+@DisplayOrder(order = {"jrubyhome", "gemdirs", "loadPaths", "contextScope", "variableBehaviour", "compileMode"})
 public class AdvancedBuilder extends ContainerBuilderImpl {
+  private static transient Logger log = LoggerFactory.getLogger(AdvancedBuilder.class);
 
   @XStreamImplicit(itemFieldName = "gemdir")
   private List<String> gemdirs;
 
+  @InputFieldDefault(value = "true")
+  private Boolean addSubdirs;
 
   public AdvancedBuilder() {
     super();
@@ -51,7 +60,7 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
 
   protected ScriptingContainer configure(ScriptingContainer container) throws CoreException {
     try {
-      container.addClassLoader(new URLClassLoader(toURL(getGemdirs())));
+      container.addClassLoader(new URLClassLoader(toURL(getGemdirs(), addSubdirs())));
     } catch (Exception e) {
       throw ExceptionHelper.wrapCoreException(e);
     }
@@ -75,8 +84,8 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
   /**
    * Set the directories from which to try and load gems
    * <p>
-   * Under the covers this effectively does {@code ScriptingContainer.addClassLoader()} with a {@link URLClassLoader} built from
-   * the list of directories specified here.
+   * Under the covers this effectively does {@code ScriptingContainer.addClassLoader()} with a {@link URLClassLoader} built from the
+   * list of directories specified here (the actual directories might be affected by {@link #setAddSubdirs(Boolean)}).
    * </p>
    * 
    * @param gemdirs the list of gemdirs to set
@@ -85,14 +94,59 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
     this.gemdirs = gemdirs;
   }
 
-  private static final URL[] toURL(List<String> gemdirs) throws MalformedURLException {
-    List<URL> urls = new ArrayList<URL>(gemdirs.size());
-    for (String dir : gemdirs) {
-      urls.add(new File(dir).toURI().toURL());
+  private static final URL[] toURL(List<String> gemdirs, boolean addSubdirs) throws MalformedURLException {
+    List<URL> urls = new ArrayList<URL>();
+    for (String gemdir : gemdirs) {
+      File directory = new File(gemdir);
+      urls.add(directory.toURI().toURL());
+      if (addSubdirs) {
+        urls.addAll(getChildren(directory));
+      }
     }
-    return urls.toArray(new URL[gemdirs.size()]);
+    log.trace("Using gemdirs: [{}]", urls);
+    return urls.toArray(new URL[0]);
   }
 
+  public Boolean getAddSubdirs() {
+    return addSubdirs;
+  }
 
+  /**
+   * Set whether or not sub directories will be added.
+   * <p>
+   * This is really just a convenience so that if you specify a gemdir of {@code /home/vagrant/.rvm/gems/jruby-9.1.17.0/gems} then
+   * it will add the contents of that directory in addition to the directory itself. This is to avoid you having to manually specify
+   * all the possible gems that are required (e.g. a list containing
+   * {@code /home/vagrant/.rvm/gems/jruby-9.1.17.0/gems/jsonpath-0.9.3, /home/vagrant/.rvm/gems/jruby-9.1.17.0/gems/multi-json-1.13.1}
+   * etc.
+   * </p>
+   * 
+   * @param b true to additionally include the first level of sub-directories of any specified directory, default is true.
+   */
+  public void setAddSubdirs(Boolean b) {
+    this.addSubdirs = b;
+  }
+
+  public AdvancedBuilder withAddSubdirs(Boolean b) {
+    setAddSubdirs(b);
+    return this;
+  }
+
+  protected boolean addSubdirs() {
+    return BooleanUtils.toBooleanDefaultIfNull(getAddSubdirs(), true);
+  }
+
+  private static List<URL> getChildren(File dir) {
+    return Arrays.asList(dir.listFiles((pathname) -> pathname.isDirectory())).stream().map(AdvancedBuilder::toURL)
+        .collect(Collectors.toList());
+  }
+
+  private static URL toURL(File f) {
+    try {
+      return f.toURI().toURL();
+    } catch (MalformedURLException e1) {
+      throw new RuntimeException(e1);
+    }
+  }
 
 }

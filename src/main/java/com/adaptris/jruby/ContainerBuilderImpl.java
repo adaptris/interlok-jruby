@@ -15,6 +15,8 @@
  */
 package com.adaptris.jruby;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,7 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   @NotNull
   @AutoPopulated
   private List<String> loadPaths;
+  private String jrubyHome;
 
 
   public ContainerBuilderImpl() {
@@ -73,6 +76,10 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
       container = new ScriptingContainer(getContextScope(), getVariableBehaviour());
       container.setCompileMode(getCompileMode());
       container.setLoadPaths(getLoadPaths());
+      String home = getJrubyHome();
+      if (!isBlank(home)) {
+        container.setHomeDirectory(home);
+      }
       container = configure(container);
     }
     return container;
@@ -106,6 +113,11 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
     this.contextScope = c;
   }
 
+  public <T extends ContainerBuilderImpl> T withContextScope(LocalContextScope s) {
+    setContextScope(s);
+    return (T) this;
+  }
+
   /**
    * @return the variableBehaviour
    */
@@ -120,6 +132,11 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
    */
   public void setVariableBehaviour(LocalVariableBehavior b) {
     this.variableBehaviour = b;
+  }
+
+  public <T extends ContainerBuilderImpl> T withVariableBehaviour(LocalVariableBehavior s) {
+    setVariableBehaviour(s);
+    return (T) this;
   }
 
   /**
@@ -138,11 +155,11 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
     this.loadPaths = paths;
   }
 
-  public ContainerBuilderImpl withLoadPaths(String... strings) {
+  public <T extends ContainerBuilderImpl> T withLoadPaths(String... strings) {
     for (String s : strings) {
       getLoadPaths().add(s);
     }
-    return this;
+    return (T) this;
   }
 
 
@@ -160,4 +177,29 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   public void setCompileMode(CompileMode m) {
     this.compileMode = m;
   }
+
+  public <T extends ContainerBuilderImpl> T withCompileMode(CompileMode s) {
+    setCompileMode(s);
+    return (T) this;
+  }
+
+  /**
+   * @return the jrubyHomeDir
+   */
+  public String getJrubyHome() {
+    return jrubyHome;
+  }
+
+  /**
+   * @param d the jrubyHomeDir to set
+   */
+  public void setJrubyHome(String d) {
+    this.jrubyHome = d;
+  }
+
+  public <T extends ContainerBuilderImpl> T withJrubyHome(String s) {
+    setJrubyHome(s);
+    return (T) this;
+  }
+
 }
