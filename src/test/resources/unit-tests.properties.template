@@ -1,6 +1,6 @@
-ProducerCase.baseDir=./build/example-xml/producers
-ConsumerCase.baseDir=./build/example-xml/consumers
-ServiceCase.baseDir=./build/example-xml/services
+ProducerCase.baseDir=./build/examples/producers
+ConsumerCase.baseDir=./build/examples/consumers
+ServiceCase.baseDir=./build/examples/services
 jruby.dir=./build/jruby-@jrubyVersion@
 jruby.script=./src/test/resources/myjsonpath.rb
 jruby.lifecycle.script=./src/test/resources/lifecycle.rb
