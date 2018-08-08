@@ -97,10 +97,12 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
   private static final URL[] toURL(List<String> gemdirs, boolean addSubdirs) throws MalformedURLException {
     List<URL> urls = new ArrayList<URL>();
     for (String gemdir : gemdirs) {
-      File directory = new File(gemdir);
-      urls.add(directory.toURI().toURL());
-      if (addSubdirs) {
-        urls.addAll(getChildren(directory));
+      if (gemdir != null) {
+        File directory = new File(gemdir);
+        urls.add(directory.toURI().toURL());
+        if (addSubdirs) {
+          urls.addAll(getChildren(directory));
+        }
       }
     }
     log.trace("Using gemdirs: [{}]", urls);
@@ -137,8 +139,14 @@ public class AdvancedBuilder extends ContainerBuilderImpl {
   }
 
   private static List<URL> getChildren(File dir) {
-    return Arrays.asList(dir.listFiles((pathname) -> pathname.isDirectory())).stream().map(AdvancedBuilder::toURL)
-        .collect(Collectors.toList());
+    List<URL> result = new ArrayList<>();
+    try {
+      result =  Arrays.asList(dir.listFiles((pathname) -> pathname.isDirectory())).stream().map(AdvancedBuilder::toURL)
+          .collect(Collectors.toList());
+    } catch (NullPointerException e) {
+      // listFiles returns null on IO exceptions etc.
+    }
+    return result;
   }
 
   private static URL toURL(File f) {

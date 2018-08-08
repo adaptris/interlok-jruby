@@ -38,6 +38,13 @@ public class TestAdvancedBuilder extends BaseCase {
   }
 
   @Test
+  public void testBuild_WithNullGemDir() throws Exception {
+    String jrubyhome = PROPERTIES.getProperty(KEY_JRUBY_HOME);
+    AdvancedBuilder b = new AdvancedBuilder().withGemdirs("/path/that/does/not/exist", (String) null).withAddSubdirs(true);
+    assertNotNull(b.build());
+  }
+
+  @Test
   public void testBuild_WithGemdirs() throws Exception {
     String jrubyhome = PROPERTIES.getProperty(KEY_JRUBY_HOME);
     String gemspecdir = String.format("%s/%s", jrubyhome, PATH_TO_SPECS);
