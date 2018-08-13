@@ -15,8 +15,6 @@
  */
 package com.adaptris.jruby;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import org.jruby.embed.ScriptingContainer;
 
 import com.adaptris.annotation.DisplayOrder;
@@ -30,39 +28,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @config jruby-default-builder
  */
 @XStreamAlias("jruby-default-builder")
-@DisplayOrder(order = {"rubyHome", "loadPaths", "contextScope", "variableBehaviour", "compileMode"})
+@DisplayOrder(order = {"jrubyHome", "loadPaths", "contextScope", "variableBehaviour", "compileMode"})
 public class DefaultBuilder extends ContainerBuilderImpl {
 
-  private String jrubyHome;
-
-  public DefaultBuilder() {
-
-  }
-
-  public DefaultBuilder withJrubyHome(String s) {
-    setJrubyHome(s);
-    return this;
-  }
-
-  /**
-   * @return the jrubyHomeDir
-   */
-  public String getJrubyHome() {
-    return jrubyHome;
-  }
-
-  /**
-   * @param d the jrubyHomeDir to set
-   */
-  public void setJrubyHome(String d) {
-    this.jrubyHome = d;
-  }
-
   protected ScriptingContainer configure(ScriptingContainer container) throws CoreException {
-    String home = getJrubyHome();
-    if (!isBlank(home)) {
-      container.setHomeDirectory(home);
-    }
     return container;
   }
 }

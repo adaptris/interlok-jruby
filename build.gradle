@@ -1,8 +1,8 @@
 import org.apache.tools.ant.filters.*
 
 ext {
-  adpCoreVersion = project.hasProperty('adpCoreVersion') ? project.getProperty('adpCoreVersion') : '3.7-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.7-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.8-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.8-SNAPSHOT'
   mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : 'https://development.adaptris.net/nexus/content/repositories/snapshots'
   repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
   repoPassword = project.hasProperty('repoPassword') ? project.getProperty('repoPassword') : 'unknown'
@@ -13,7 +13,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.25'
-  jrubyVersion = '9.1.15.0'
+  jrubyVersion = '9.2.0.0'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -61,22 +61,22 @@ configurations.all {
 }
 
 dependencies {
-  compile ("com.adaptris:adp-core:$adpCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-common:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
   compile ("org.slf4j:slf4j-api:$slf4jVersion")
   compile ("org.jruby:jruby:$jrubyVersion")
 
-  annotationProcessor ("com.adaptris:interlok-common:$adpCoreVersion") {changing= true}
+  annotationProcessor ("com.adaptris:interlok-common:$interlokCoreVersion") {changing= true}
 
   testCompile ('junit:junit:4.12')
-  testCompile ("com.adaptris:adp-stubs:$adpCoreVersion") { changing= true}
+  testCompile ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
   testCompile ("org.apache.logging.log4j:log4j-core:2.8.1")
   testCompile ("org.apache.logging.log4j:log4j-1.2-api:2.8.1")
   testCompile ("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1")
   testCompile ("org.apache.logging.log4j:log4j-api:2.8.1")
-  testCompile ("org.mockito:mockito-all:1.9.5")
+  testCompile ("org.mockito:mockito-all:1.10.19")
 
-  javadoc("com.adaptris:adp-core-apt:$adpCoreVersion") { changing= true}
+  javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
 
 }
 
@@ -101,8 +101,8 @@ sourceSets {
 
 task configureJRuby {
   doLast {
-    def jrubyZipFile = "jruby-bin-" + jrubyVersion + ".zip"
-    def jrubyUrl = "https://s3.amazonaws.com/jruby.org/downloads/" + jrubyVersion + "/" + jrubyZipFile
+    def jrubyZipFile = "jruby-dist-" + jrubyVersion + "-bin.zip"
+    def jrubyUrl = "https://repo1.maven.org/maven2/org/jruby/jruby-dist/" + jrubyVersion + "/" + jrubyZipFile
     def downloadDest = project.buildDir.getCanonicalPath() + "/" + jrubyZipFile
     def jrubyBinDir =  project.buildDir.getCanonicalPath() + "/jruby-" + jrubyVersion + "/bin"
     ant.get(src: jrubyUrl, dest: downloadDest, usetimestamp: true)
