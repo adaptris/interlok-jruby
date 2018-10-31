@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.*
 ext {
   interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.8-SNAPSHOT'
   releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.8-SNAPSHOT'
-  mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : 'https://development.adaptris.net/nexus/content/repositories/snapshots'
+  mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : 'https://nexus.adaptris.net/nexus/content/repositories/snapshots'
   repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
   repoPassword = project.hasProperty('repoPassword') ? project.getProperty('repoPassword') : 'unknown'
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
@@ -37,9 +37,9 @@ def versionDir = "$buildDir/version"
 // In this section you declare where to find the dependencies of your project
 repositories {
   maven { url "$defaultNexusRepo" }
-  maven { url "https://development.adaptris.net/nexus/content/groups/public" }
-  maven { url "https://development.adaptris.net/nexus/content/repositories/snapshots" }
-  maven { url "https://development.adaptris.net/nexus/content/repositories/releases" }
+  maven { url "https://nexus.adaptris.net/nexus/content/groups/public" }
+  maven { url "https://nexus.adaptris.net/nexus/content/repositories/snapshots" }
+  maven { url "https://nexus.adaptris.net/nexus/content/repositories/releases" }
 }
 
 
