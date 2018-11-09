@@ -109,14 +109,14 @@ task configureJRuby {
     def jrubyBinDir =  project.buildDir.getCanonicalPath() + "/jruby-" + jrubyVersion + "/bin"
     ant.get(src: jrubyUrl, dest: downloadDest, usetimestamp: true)
     ant.unzip(src: downloadDest, dest: project.buildDir, overwrite:true)
-    ant.exec(executable: "cmd", osfamily: "windows", dir: jrubyBinDir) {
+    ant.exec(executable: "cmd", osfamily: "windows", dir: jrubyBinDir, failonerror: true) {
       arg(value: "/c")
       arg(value: "jruby.bat")
       arg(value: "-Sgem")
       arg(value: "install")
       arg(value: "jsonpath")
     }
-    ant.exec(executable: "bash", osfamily: "unix", dir: jrubyBinDir) {
+    ant.exec(executable: "bash", osfamily: "unix", dir: jrubyBinDir, failonerror: true) {
       arg(value: "jruby")
       arg(value: "-Sgem")
       arg(value: "install")
