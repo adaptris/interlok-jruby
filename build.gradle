@@ -1,5 +1,13 @@
 import org.apache.tools.ant.filters.*
 
+plugins {
+  id 'java'
+  id 'maven'
+  id 'maven-publish'
+  id  "jacoco"
+  id 'com.github.spotbugs' version '1.6.10'
+}
+
 ext {
   interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.8-SNAPSHOT'
   releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.8-SNAPSHOT'
@@ -29,11 +37,6 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
   }
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: "jacoco"
 
 sourceCompatibility = 1.8
 group   = 'com.adaptris'
@@ -196,11 +199,6 @@ jacocoTestReport {
     }
 }
 
-check.dependsOn jacocoTestReport
-processTestResources.dependsOn copyUnitTestProperties,configureJRuby
-clean.dependsOn deleteUnitTestProperties
-javadoc.dependsOn offlinePackageList
-
 task javadocJar(type: Jar, dependsOn: javadoc) {
   classifier = 'javadoc'
   from javadoc.destinationDir
@@ -251,3 +249,30 @@ publishing {
     }
   }
 }
+
+
+spotbugs {
+  // showProgress = "true"
+  effort = "max"
+  // Ignore failures?
+  // ignoreFailures = false
+
+  // We only care about "high priority" issues...
+  reportLevel = "high"
+}
+
+// disable spotbugsTests which checks our test code..
+spotbugsTest.enabled = false
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+
+check.dependsOn jacocoTestReport
+processTestResources.dependsOn copyUnitTestProperties,configureJRuby
+clean.dependsOn deleteUnitTestProperties
+javadoc.dependsOn offlinePackageList
