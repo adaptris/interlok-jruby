@@ -1,5 +1,13 @@
 import org.apache.tools.ant.filters.*
 
+plugins {
+  id 'java'
+  id 'maven'
+  id 'maven-publish'
+  id  "jacoco"
+  id 'com.github.spotbugs' version '1.6.10'
+}
+
 ext {
   interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.8-SNAPSHOT'
   releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.8-SNAPSHOT'
@@ -16,8 +24,10 @@ ext {
   componentName='Interlok/JRuby Integration'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '1.7.25'
-  jrubyVersion = '9.2.5.0'
+  slf4jVersion = '1.7.26'
+  jrubyVersion = '9.2.6.0'
+  log4j2Version = '2.11.2'
+
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -27,11 +37,6 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
   }
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: "jacoco"
 
 sourceCompatibility = 1.8
 group   = 'com.adaptris'
@@ -76,9 +81,9 @@ dependencies {
 
   testCompile ('junit:junit:4.12')
   testCompile ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
-  testCompile ("org.apache.logging.log4j:log4j-core:2.8.1")
-  testCompile ("org.apache.logging.log4j:log4j-1.2-api:2.8.1")
-  testCompile ("org.apache.logging.log4j:log4j-api:2.8.1")
+  testCompile ("org.apache.logging.log4j:log4j-core:$log4j2Version")
+  testCompile ("org.apache.logging.log4j:log4j-1.2-api:$log4j2Version")
+  testCompile ("org.apache.logging.log4j:log4j-api:$log4j2Version")
   testCompile ("org.mockito:mockito-all:1.10.19")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
@@ -194,11 +199,6 @@ jacocoTestReport {
     }
 }
 
-check.dependsOn jacocoTestReport
-processTestResources.dependsOn copyUnitTestProperties,configureJRuby
-clean.dependsOn deleteUnitTestProperties
-javadoc.dependsOn offlinePackageList
-
 task javadocJar(type: Jar, dependsOn: javadoc) {
   classifier = 'javadoc'
   from javadoc.destinationDir
@@ -249,3 +249,30 @@ publishing {
     }
   }
 }
+
+
+spotbugs {
+  // showProgress = "true"
+  effort = "max"
+  // Ignore failures?
+  // ignoreFailures = false
+
+  // We only care about "high priority" issues...
+  reportLevel = "high"
+}
+
+// disable spotbugsTests which checks our test code..
+spotbugsTest.enabled = false
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+
+check.dependsOn jacocoTestReport
+processTestResources.dependsOn copyUnitTestProperties,configureJRuby
+clean.dependsOn deleteUnitTestProperties
+javadoc.dependsOn offlinePackageList

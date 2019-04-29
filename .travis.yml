@@ -5,6 +5,8 @@ dist: trusty
 before_install:
   - sudo service haveged start
 
+script: ./gradlew --no-daemon -PverboseTests=true test jacocoTestReport
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
