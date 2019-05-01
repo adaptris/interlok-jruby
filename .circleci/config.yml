@@ -166,8 +166,6 @@ workflows:
     jobs:
       - build
       - buildjava11
-      - publish:
-          context: nexus-publish
 
   nightly:
     triggers:
