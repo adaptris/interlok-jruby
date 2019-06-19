@@ -230,6 +230,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("description", "Tighter coupling with JRuby rather than via JSR223")
+        asNode().appendNode("name", componentName)
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.6.3+")
         properties.appendNode("tags", "ruby,jruby,scripting")
