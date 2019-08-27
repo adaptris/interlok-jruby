@@ -1,0 +1,17 @@
+extraction:
+  java:
+    index:
+      gradle:
+        version: 5.2.1
+
+path_classifiers:
+  docs:
+    - "LICENSE*"
+    - "*.md"
+    - "*.html"
+  ci:
+    - "appveyor.yml"
+    - ".codecov.yml"
+    - ".travis.yml"
+    - ".circleci"
+    - ".dependabot"
