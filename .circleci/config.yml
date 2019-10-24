@@ -75,6 +75,7 @@ jobs:
       - run:
           name: Configure
           command: |
+            sudo apt-get -y update
             sudo apt-get -y install graphviz
             mkdir -p ~/.gradle
             echo "org.gradle.warning.mode=none" > ~/.gradle/gradle.properties
