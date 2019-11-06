@@ -24,7 +24,7 @@ ext {
   componentName='Interlok/JRuby Integration'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '1.7.28'
+  slf4jVersion = '1.7.29'
   jrubyVersion = '9.2.8.0'
   log4j2Version = '2.12.1'
 
