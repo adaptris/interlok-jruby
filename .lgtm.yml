@@ -15,3 +15,5 @@ path_classifiers:
     - ".travis.yml"
     - ".circleci"
     - ".dependabot"
+    - ".github"
+    - ".lgtm.yml"
