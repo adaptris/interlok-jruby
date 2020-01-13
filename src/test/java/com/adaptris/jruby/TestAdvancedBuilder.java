@@ -16,7 +16,7 @@
 package com.adaptris.jruby;
 
 import static com.adaptris.jruby.JRubyScriptingContainerTest.KEY_JRUBY_HOME;
-
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.adaptris.core.BaseCase;
@@ -26,8 +26,8 @@ public class TestAdvancedBuilder extends BaseCase {
   private static final String PATH_TO_GEMS = "lib/ruby/gems/shared/gems";
   private static final String PATH_TO_SPECS = "lib/ruby/gems/shared/specifications";
 
-  public TestAdvancedBuilder(String name) {
-    super(name);
+  public TestAdvancedBuilder() {
+    super();
   }
 
 
@@ -62,5 +62,11 @@ public class TestAdvancedBuilder extends BaseCase {
 
     AdvancedBuilder b = new AdvancedBuilder().withLoadPaths(d1, d2);
     assertNotNull(b.build());
+  }
+
+
+  @Override
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 }
