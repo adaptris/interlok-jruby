@@ -23,7 +23,7 @@ jobs:
           command: |
             mkdir -p ~/.gradle
             echo "org.gradle.warning.mode=none" > ~/.gradle/gradle.properties
-            sudo sed -i.bak -e "s/securerandom.source=file:\/dev\/random/securerandom.source=file:\/dev\/.\/urandom/g" -e "s/securerandom.strongAlgorithms=NativePRNGBlocking/securerandom.strongAlgorithms=NativePRNG/g" /etc/java-8-openjdk/security/java.security
+            sudo sed -i.bak -e "s/securerandom.source=file:\/dev\/random/securerandom.source=file:\/dev\/.\/urandom/g" -e "s/securerandom.strongAlgorithms=NativePRNGBlocking/securerandom.strongAlgorithms=NativePRNG/g" /usr/local/openjdk-8/jre/lib/security/java.security
 
       # Download and cache dependencies
       - restore_cache:
@@ -79,7 +79,7 @@ jobs:
             sudo apt-get -y install graphviz
             mkdir -p ~/.gradle
             echo "org.gradle.warning.mode=none" > ~/.gradle/gradle.properties
-            sudo sed -i.bak -e "s/securerandom.source=file:\/dev\/random/securerandom.source=file:\/dev\/.\/urandom/g" -e "s/securerandom.strongAlgorithms=NativePRNGBlocking/securerandom.strongAlgorithms=NativePRNG/g" /etc/java-8-openjdk/security/java.security
+            sudo sed -i.bak -e "s/securerandom.source=file:\/dev\/random/securerandom.source=file:\/dev\/.\/urandom/g" -e "s/securerandom.strongAlgorithms=NativePRNGBlocking/securerandom.strongAlgorithms=NativePRNG/g" /usr/local/openjdk-8/jre/lib/security/java.security
 
       # Download and cache dependencies
       - restore_cache:
