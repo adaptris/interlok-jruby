@@ -9,8 +9,8 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.9-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.9-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.10-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.10-SNAPSHOT'
   nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -24,9 +24,9 @@ ext {
   componentName='Interlok/JRuby Integration'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '1.7.29'
-  jrubyVersion = '9.2.9.0'
-  log4j2Version = '2.12.1'
+  slf4jVersion = '1.7.30'
+  jrubyVersion = '9.2.10.0'
+  log4j2Version = '2.13.0'
 
 }
 
@@ -96,7 +96,7 @@ dependencies {
 
   annotationProcessor ("com.adaptris:interlok-common:$interlokCoreVersion") {changing= true}
 
-  testCompile ('junit:junit:4.12')
+  testCompile ('junit:junit:4.13')
   testCompile ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
   testCompile ("org.apache.logging.log4j:log4j-core:$log4j2Version")
   testCompile ("org.apache.logging.log4j:log4j-1.2-api:$log4j2Version")

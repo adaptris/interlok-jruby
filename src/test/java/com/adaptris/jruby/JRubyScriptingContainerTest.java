@@ -15,12 +15,15 @@
  */
 package com.adaptris.jruby;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import java.util.Arrays;
 import java.util.List;
-
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
-
+import org.junit.Test;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.CoreException;
@@ -33,14 +36,11 @@ public class JRubyScriptingContainerTest extends ServiceCase {
   public static final String KEY_LIFECYCLE_SCRIPT = "jruby.lifecycle.script";
   public static final String KEY_JRUBY_HOME = "jruby.dir";
 
-  public JRubyScriptingContainerTest(String name) {
-    super(name);
+  public JRubyScriptingContainerTest() {
+    super();
   }
 
-  public void setUp() throws Exception {}
-
-  public void tearDown() throws Exception {}
-
+  @Test
   public void testIsBranching() throws Exception {
 
     JRubyScriptingContainer service = new JRubyScriptingContainer();
@@ -51,6 +51,7 @@ public class JRubyScriptingContainerTest extends ServiceCase {
     assertFalse(service.isBranching());
   }
 
+  @Test
   public void testScript_DefaultBuilder() throws Exception {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
     service.setServiceScript(new ScriptWrapper(PathType.ABSOLUTE, PROPERTIES.getProperty(KEY_TEST_SCRIPT)));
@@ -60,6 +61,7 @@ public class JRubyScriptingContainerTest extends ServiceCase {
     assertEquals("[\"bar\"]", msg.getContent());
   }
 
+  @Test
   public void testScript_WithLifecycleScripts() throws Exception {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
 
@@ -74,6 +76,7 @@ public class JRubyScriptingContainerTest extends ServiceCase {
     assertEquals("[\"bar\"]", msg.getContent());
   }
 
+  @Test
   public void testStart() throws Exception {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
     service.setBuilder(new BrokenBuilder(BrokenBuilder.WhenToBreak.FIRST_BUILD_SUCCESSFUL));
@@ -86,6 +89,7 @@ public class JRubyScriptingContainerTest extends ServiceCase {
     }
   }
 
+  @Test
   public void testTerminate() throws Exception {
     JRubyScriptingContainer service = new JRubyScriptingContainer();
     service.setBuilder(new BrokenBuilder(BrokenBuilder.WhenToBreak.TERMINATE));
@@ -155,5 +159,10 @@ public class JRubyScriptingContainerTest extends ServiceCase {
       super.terminate(c);
     }
     
+  }
+
+  @Override
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 }
