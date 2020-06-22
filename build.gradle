@@ -27,7 +27,6 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.30'
   jrubyVersion = '9.2.11.1'
-
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -260,6 +259,7 @@ publishing {
         properties.appendNode("tags", "ruby,jruby,scripting")
         properties.appendNode("license", "false")
         properties.appendNode("externalUrl", "http://jruby.org")
+        properties.appendNode("repository", "https://github.com/adaptris/interlok-jruby")
       }
     }
   }
