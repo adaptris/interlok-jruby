@@ -27,3 +27,5 @@ log4j.properties
 target
 bin
 src/test/resources/unit-tests.properties
+.gradle
+gradle.properties
