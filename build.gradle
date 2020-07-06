@@ -26,7 +26,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.30'
-  jrubyVersion = '9.2.11.1'
+  jrubyVersion = '9.2.12.0'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
