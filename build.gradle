@@ -110,7 +110,7 @@ dependencies {
   }
 
   testCompile ("org.mockito:mockito-core:3.5.7")
-  testCompile ("org.mockito:mockito-inline:3.5.7")
+  testCompile ("org.mockito:mockito-inline:3.5.9")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
