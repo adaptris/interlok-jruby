@@ -5,13 +5,13 @@ plugins {
   id 'maven'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '4.2.3'
+  id 'com.github.spotbugs' version '4.5.0'
   id 'org.owasp.dependencycheck' version '5.3.2.1'
 }
 
 ext {
-  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.10-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.10-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.11-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.11-SNAPSHOT'
   nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -26,7 +26,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.30'
-  jrubyVersion = '9.2.11.1'
+  jrubyVersion = '9.2.13.0'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -109,7 +109,8 @@ dependencies {
     exclude group: "org.apache.logging.log4j"
   }
 
-  testCompile ("org.mockito:mockito-all:1.10.19")
+  testCompile ("org.mockito:mockito-core:3.5.9")
+  testCompile ("org.mockito:mockito-inline:3.5.9")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
