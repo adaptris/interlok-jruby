@@ -17,5 +17,11 @@
     <packageUrl regex="true">^pkg:maven/rubygems/jruby.*$</packageUrl>
     <cve>CVE-2010-1330</cve>
     <cve>CVE-2011-4838</cve>
+    <cve>CVE-2016-2106</cve>
+    <cve>CVE-2010-4252</cve>
+    <cve>CVE-2016-2176</cve>
+    <cve>CVE-2016-2108</cve>
+    <cve>CVE-1999-0428</cve>
+    <cve>CVE-2016-2109</cve>
   </suppress>
 </suppressions>
