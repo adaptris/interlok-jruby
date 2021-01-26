@@ -23,5 +23,26 @@
     <cve>CVE-2016-2108</cve>
     <cve>CVE-1999-0428</cve>
     <cve>CVE-2016-2109</cve>
+    <cve>CVE-2009-1387</cve>
+    <cve>CVE-2010-5298</cve>
+    <cve>CVE-2011-1945</cve>
+    <cve>CVE-2011-4108</cve>
+    <cve>CVE-2011-4576</cve>
+    <cve>CVE-2011-4577</cve>
+    <cve>CVE-2011-4619</cve>
+    <cve>CVE-2012-0027</cve>
+    <cve>CVE-2013-6449</cve>
+    <cve>CVE-2014-0076</cve>
+    <cve>CVE-2015-4000</cve>
+    <cve>CVE-2016-2107</cve>
+    <cve>CVE-2016-7056</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: jruby-stdlib-9.2.14.0.jar: bcprov-jdk15on-1.65.jar
+	We should remove this supporess when jruby has been updated with a newer version of bouncycastle (1.67+)
+    ]]></notes>
+    <sha1>320b989112f00a63a3bcfa5a98f31a4f865a20fa</sha1>
+    <cve>CVE-2020-28052</cve>
   </suppress>
 </suppressions>
