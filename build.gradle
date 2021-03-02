@@ -29,6 +29,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.30'
+  mockitoVersion = '3.8.0'
   jrubyVersion = '9.2.14.0'
 }
 
@@ -113,8 +114,8 @@ dependencies {
     exclude group: "org.apache.logging.log4j"
   }
 
-  testCompile ("org.mockito:mockito-core:3.7.7")
-  testCompile ("org.mockito:mockito-inline:3.8.0")
+  testCompile ("org.mockito:mockito-core:$mockitoVersion")
+  testCompile ("org.mockito:mockito-inline:$mockitoVersion")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
