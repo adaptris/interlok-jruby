@@ -30,7 +30,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.30'
   mockitoVersion = '3.8.0'
-  jrubyVersion = '9.2.15.0'
+  jrubyVersion = '9.2.16.0'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
