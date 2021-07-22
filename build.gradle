@@ -59,8 +59,18 @@ def versionDir = "$buildDir/version"
 
 // Disable gradle module generation since we probably don't want
 // xxx.module files in your repository.
-tasks.withType(GenerateModuleMetadata) {
-  enabled = false
+allprojects {
+  tasks.withType(Jar) {
+    metaInf {
+      from ("$rootDir") {
+        include 'LICENSE*'
+        include 'NOTICE*'
+      }
+    }
+  }
+  tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+  }
 }
 
 repositories {
