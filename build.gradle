@@ -28,7 +28,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.32'
   mockitoVersion = '3.12.4'
-  jrubyVersion = '9.2.19.0'
+  jrubyVersion = '9.3.0.0'
 }
 
 
