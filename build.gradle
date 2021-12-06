@@ -4,13 +4,13 @@ plugins {
   id 'java-library'
   id 'maven-publish'
   id 'jacoco'
-  id 'com.github.spotbugs' version '4.7.2'
-  id 'org.owasp.dependencycheck' version '6.2.2'
+  id 'com.github.spotbugs' version '4.7.9'
+  id 'org.owasp.dependencycheck' version '6.5.0.1'
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.2-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.2-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.3-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.3-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -27,8 +27,8 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.32'
-  mockitoVersion = '3.11.2'
-  jrubyVersion = '9.2.19.0'
+  mockitoVersion = '4.0.0'
+  jrubyVersion = '9.3.1.0'
 }
 
 
