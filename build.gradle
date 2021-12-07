@@ -272,8 +272,9 @@ publishing {
       artifact sourcesJar { classifier "sources" }
 
       pom.withXml {
-        asNode().appendNode("description", componentDesc)
         asNode().appendNode("name", componentName)
+		asNode().appendNode("description", componentDesc)
+		asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.6.3+")
         properties.appendNode("tags", "ruby,jruby,scripting")
