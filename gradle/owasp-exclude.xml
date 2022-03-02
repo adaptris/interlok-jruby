@@ -36,6 +36,7 @@
     <cve>CVE-2015-4000</cve>
     <cve>CVE-2016-2107</cve>
     <cve>CVE-2016-7056</cve>
+	<cve>CVE-2021-4044</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
