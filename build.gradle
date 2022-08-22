@@ -4,7 +4,7 @@ plugins {
   id 'java-library'
   id 'maven-publish'
   id 'jacoco'
-  id 'com.github.spotbugs' version '5.0.9'
+  id 'com.github.spotbugs' version '5.0.10'
   id 'org.owasp.dependencycheck' version '7.1.2'
 }
 
