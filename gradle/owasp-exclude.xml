@@ -40,10 +40,10 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-    file name: jruby-stdlib-9.2.14.0.jar: bcprov-jdk15on-1.65.jar
-	We should remove this supporess when jruby has been updated with a newer version of bouncycastle (1.67+)
+    file name: jruby-stdlib-9.3.7.0.jar: snakeyaml-1.28.jar
+	We should remove this supporess when jruby has been updated with a newer version of snakeyaml (1.31+)
     ]]></notes>
-    <sha1>320b989112f00a63a3bcfa5a98f31a4f865a20fa</sha1>
-    <cve>CVE-2020-28052</cve>
+    <sha1>7cae037c3014350c923776548e71c9feb7a69259</sha1>
+    <cve>CVE-2022-25857</cve>
   </suppress>
 </suppressions>
