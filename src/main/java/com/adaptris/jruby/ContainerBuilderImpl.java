@@ -1,12 +1,12 @@
 /*
  * Copyright 2017 Adaptris Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -61,14 +61,12 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   private List<String> loadPaths;
   private String jrubyHome;
 
-
   public ContainerBuilderImpl() {
     setContextScope(LocalContextScope.THREADSAFE);
     setVariableBehaviour(LocalVariableBehavior.TRANSIENT);
     setLoadPaths(new ArrayList<String>());
     setCompileMode(CompileMode.JIT);
   }
-
 
   @Override
   public ScriptingContainer build() throws CoreException {
@@ -106,13 +104,15 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
 
   /**
    * Set the context scope
-   * 
-   * @param c the contextScope to set; default is {@code LocalContextScope.THREADSAFE}
+   *
+   * @param c
+   *          the contextScope to set; default is {@code LocalContextScope.THREADSAFE}
    */
   public void setContextScope(LocalContextScope c) {
-    this.contextScope = c;
+    contextScope = c;
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends ContainerBuilderImpl> T withContextScope(LocalContextScope s) {
     setContextScope(s);
     return (T) this;
@@ -127,13 +127,15 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
 
   /**
    * Set the variable behaviour
-   * 
-   * @param b the variableBehaviour to set; default is {@code LocalVariableBehavior.TRANSIENT}
+   *
+   * @param b
+   *          the variableBehaviour to set; default is {@code LocalVariableBehavior.TRANSIENT}
    */
   public void setVariableBehaviour(LocalVariableBehavior b) {
-    this.variableBehaviour = b;
+    variableBehaviour = b;
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends ContainerBuilderImpl> T withVariableBehaviour(LocalVariableBehavior s) {
     setVariableBehaviour(s);
     return (T) this;
@@ -148,20 +150,21 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
 
   /**
    * Set any additional directories that need to be added via {@code ScriptingContainer.setLoadPaths()}.
-   * 
-   * @param paths the loadPaths to set
+   *
+   * @param paths
+   *          the loadPaths to set
    */
   public void setLoadPaths(List<String> paths) {
-    this.loadPaths = paths;
+    loadPaths = paths;
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends ContainerBuilderImpl> T withLoadPaths(String... strings) {
     for (String s : strings) {
       getLoadPaths().add(s);
     }
     return (T) this;
   }
-
 
   /**
    * @return the compileMode
@@ -170,14 +173,15 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
     return compileMode;
   }
 
-
   /**
-   * @param m the compileMode to set; default is {@code JIT}
+   * @param m
+   *          the compileMode to set; default is {@code JIT}
    */
   public void setCompileMode(CompileMode m) {
-    this.compileMode = m;
+    compileMode = m;
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends ContainerBuilderImpl> T withCompileMode(CompileMode s) {
     setCompileMode(s);
     return (T) this;
@@ -191,12 +195,14 @@ public abstract class ContainerBuilderImpl implements ContainerBuilder {
   }
 
   /**
-   * @param d the jrubyHomeDir to set
+   * @param d
+   *          the jrubyHomeDir to set
    */
   public void setJrubyHome(String d) {
-    this.jrubyHome = d;
+    jrubyHome = d;
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends ContainerBuilderImpl> T withJrubyHome(String s) {
     setJrubyHome(s);
     return (T) this;

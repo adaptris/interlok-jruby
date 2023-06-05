@@ -1,12 +1,12 @@
 /*
  * Copyright 2017 Adaptris Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,11 +15,11 @@
 */
 package com.adaptris.jruby;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.validator.constraints.NotBlank;
 import org.jruby.embed.PathType;
 
 import com.adaptris.annotation.AutoPopulated;
@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Wraps a jruby script location.
- * 
+ *
  * @author lchan
  *
  */
@@ -64,7 +64,8 @@ public class ScriptWrapper {
   }
 
   /**
-   * @param location the location to set
+   * @param location
+   *          the location to set
    */
   public void setLocation(String location) {
     this.location = location;
@@ -78,15 +79,17 @@ public class ScriptWrapper {
   }
 
   /**
-   * @param type the pathType to set, defaults to {@link PathType#ABSOLUTE} if not specified.
+   * @param type
+   *          the pathType to set, defaults to {@link PathType#ABSOLUTE} if not specified.
    */
   public void setPathType(PathType type) {
-    this.pathType = type;
+    pathType = type;
   }
 
+  @Override
   public String toString() {
-    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("location", getLocation())
-        .append("pathtype", getPathType()).toString();
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("location", getLocation()).append("pathtype", getPathType())
+        .toString();
   }
 
 }
