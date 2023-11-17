@@ -1,12 +1,12 @@
 /*
  * Copyright 2017 Adaptris Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,20 +16,16 @@
 package com.adaptris.jruby;
 
 import static com.adaptris.jruby.JRubyScriptingContainerTest.KEY_JRUBY_HOME;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.adaptris.core.BaseCase;
+import org.junit.jupiter.api.Test;
+
+import com.adaptris.interlok.junit.scaffolding.BaseCase;
 
 public class TestAdvancedBuilder extends BaseCase {
 
   private static final String PATH_TO_GEMS = "lib/ruby/gems/shared/gems";
   private static final String PATH_TO_SPECS = "lib/ruby/gems/shared/specifications";
-
-  public TestAdvancedBuilder() {
-    super();
-  }
-
 
   @Test
   public void testBuild() throws Exception {
@@ -39,7 +35,6 @@ public class TestAdvancedBuilder extends BaseCase {
 
   @Test
   public void testBuild_WithNullGemDir() throws Exception {
-    String jrubyhome = PROPERTIES.getProperty(KEY_JRUBY_HOME);
     AdvancedBuilder b = new AdvancedBuilder().withGemdirs("/path/that/does/not/exist", (String) null).withAddSubdirs(true);
     assertNotNull(b.build());
   }
@@ -64,9 +59,4 @@ public class TestAdvancedBuilder extends BaseCase {
     assertNotNull(b.build());
   }
 
-
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
 }

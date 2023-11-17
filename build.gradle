@@ -1,16 +1,17 @@
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id 'java-library'
-  id 'maven-publish'
-  id 'jacoco'
-  id 'com.github.spotbugs' version '5.0.14'
-  id 'org.owasp.dependencycheck' version '8.2.1'
+  id "java-library"
+  id "maven-publish"
+  id "jacoco"
+  id "com.github.spotbugs" version "5.2.1"
+  id "org.sonarqube" version "4.4.1.3373"
+  id "org.owasp.dependencycheck" version "8.4.2"
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.8-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.8-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.0-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '5.0-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -26,9 +27,9 @@ ext {
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '2.0.3'
-  mockitoVersion = '4.9.0'
-  jrubyVersion = '9.4.2.0'
+  slf4jVersion = '2.0.9'
+  mockitoVersion = '5.2.0'
+  jrubyVersion = '9.4.4.0'
 }
 
 
@@ -51,11 +52,19 @@ ext.buildInfo = { ->
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 group   = 'com.adaptris'
 version = releaseVersion
 def versionDir = "$buildDir/version"
+
+sonar {
+  properties {
+    property "sonar.projectKey", "adaptris_interlok-jruby"
+    property "sonar.organization", "adaptris-org"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
+}
 
 // Disable gradle module generation since we probably don't want
 // xxx.module files in your repository.
@@ -121,7 +130,7 @@ dependencies {
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-  testImplementation ('junit:junit:4.13.2')
+  testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.0")
   testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
   testImplementation ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true }
   testImplementation ("org.mockito:mockito-core:$mockitoVersion")
@@ -130,10 +139,7 @@ dependencies {
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-common:$interlokCoreVersion:javadoc@jar") { changing= true}
-
-
 }
-
 
 jar {
   manifest {
@@ -145,7 +151,6 @@ jar {
                "Implementation-Vendor": organizationName)
   }
 }
-
 
 sourceSets {
   main {
@@ -227,18 +232,17 @@ javadoc {
     options.linksOffline(interlokJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-core-$interlokCoreVersion-javadoc.jar")
     options.linksOffline(interlokCommonJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-common-$interlokCoreVersion-javadoc.jar")
     taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
-    options.addBooleanOption "-no-module-directories", true
-    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption "Xdoclint:none", "-quiet"
     options.addStringOption "tagletpath", configurations.javadoc.asPath
     title= componentName
   }
 }
 
 jacocoTestReport {
-    reports {
-        xml.required= true
-        html.required= true
-    }
+  reports {
+    xml.required= true
+    html.required= true
+  }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -252,8 +256,8 @@ task examplesJar(type: Jar, dependsOn: test) {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 artifacts {
@@ -273,8 +277,8 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-		asNode().appendNode("description", componentDesc)
-		asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/")
+        asNode().appendNode("description", componentDesc)
+        asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.6.3+")
         properties.appendNode("tags", "ruby,jruby,scripting")
@@ -320,10 +324,14 @@ dependencyCheck  {
     knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
   }
 }
+  
+test {
+  jvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED', '--add-opens', 'java.base/java.util=ALL-UNNAMED']
+  useJUnitPlatform()
+}
 
 // disable spotbugsTests which checks our test code..
 spotbugsTest.enabled = false
-
 
 check.dependsOn jacocoTestReport
 processTestResources.dependsOn copyUnitTestProperties,configureJRuby
