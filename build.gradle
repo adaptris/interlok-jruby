@@ -4,9 +4,9 @@ plugins {
   id "java-library"
   id "maven-publish"
   id "jacoco"
-  id "com.github.spotbugs" version "5.2.1"
+  id "com.github.spotbugs" version "6.0.6"
   id "org.sonarqube" version "4.4.1.3373"
-  id "org.owasp.dependencycheck" version "8.4.2"
+  id "org.owasp.dependencycheck" version "9.0.8"
 }
 
 ext {
@@ -27,9 +27,9 @@ ext {
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '2.0.9'
+  slf4jVersion = '2.0.11'
   mockitoVersion = '5.2.0'
-  jrubyVersion = '9.4.4.0'
+  jrubyVersion = '9.4.5.0'
 }
 
 
@@ -130,7 +130,7 @@ dependencies {
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-  testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+  testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
   testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
   testImplementation ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true }
   testImplementation ("org.mockito:mockito-core:$mockitoVersion")
@@ -300,8 +300,8 @@ publishing {
 }
 
 spotbugsMain {
-  effort = "max"
-  reportLevel = "high"
+  effort = com.github.spotbugs.snom.Effort.valueOf("MAX")
+  reportLevel = com.github.spotbugs.snom.Confidence.valueOf("HIGH")
   reports {
     xml {
       required.set(false)
