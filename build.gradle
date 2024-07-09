@@ -319,6 +319,9 @@ dependencyCheck  {
   formats = [ "HTML", "JUNIT" ]
   junitFailOnCVSS = 7.0
   failBuildOnCVSS = 7.0
+  nvd {
+    apiKey = System.getenv("NVD_API_KEY")
+  }
   analyzers {
     assemblyEnabled=false
     knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
