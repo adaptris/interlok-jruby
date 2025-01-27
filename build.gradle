@@ -9,7 +9,7 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.9-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.0.4B2-RELEASE'
   releaseVersion = project.findProperty('releaseVersion') ?: '4.9-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
