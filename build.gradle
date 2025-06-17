@@ -5,7 +5,7 @@ plugins {
   id 'maven-publish'
   id 'jacoco'
   id 'com.github.spotbugs' version '6.2.0'
-  id 'org.owasp.dependencycheck' version '9.0.10'
+  id 'org.owasp.dependencycheck' version '12.1.1'
 }
 
 ext {
@@ -317,7 +317,12 @@ dependencyCheck  {
   failBuildOnCVSS = 7.0
   analyzers {
     assemblyEnabled=false
-    knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
+    kev { url = project.findProperty('dependencyCheckKnownExploitedURL') }
+  }
+  nvd {
+    apiKey = System.getenv("NVD_API_KEY")
+    delay=project.findProperty("dependencyCheckNvdDelay")
+    datafeedUrl=project.findProperty("dependencyCheckNvdDatafeedUrl")
   }
 }
 
