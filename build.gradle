@@ -29,7 +29,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '2.0.17'
   mockitoVersion = '5.2.0'
-  jrubyVersion = '9.4.14.0'
+  jrubyVersion = '9.4.15.0'
 }
 
 
@@ -169,7 +169,7 @@ task configureJRuby {
     ant.unzip(src: downloadDest, dest: project.buildDir, overwrite:true)
     ant.exec(executable: "cmd", osfamily: "windows", dir: jrubyBinDir, failonerror: true) {
       arg(value: "/c")
-      arg(value: "jruby.bat")
+      arg(value: new File(jrubyBinDir, "jruby.bat").getCanonicalPath())
       arg(value: "-Sgem")
       arg(value: "install")
       arg(value: "jsonpath")
