@@ -71,11 +71,18 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-      JRuby 9.4.14.0 is the latest release in the current 9.4.x line used by this project.
-      The remaining finding comes from bundled jline 2.14.6 inside jruby-stdlib.
+      JRuby 9.4.15.0 is the latest release in the current 9.x line used by this project.
+      CVE-2023-50572 remains in bundled JLine 2.14.6; no newer stable JLine 2 release is available.
+      CVE-2026-56740 and CVE-2026-56741 are false positives: they affect the JLine 3
+      remote-telnet module, whose TelnetIO and ConnectionData classes are absent from this JLine 2 jar.
+      References:
+      https://github.com/jline/jline3/security/advisories/GHSA-47qp-hqvx-6r3f
+      https://github.com/jline/jline3/security/advisories/GHSA-2r2c-cx56-8933
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/jline/jline@2\.14\.6$</packageUrl>
     <cve>CVE-2023-50572</cve>
+    <cve>CVE-2026-56740</cve>
+    <cve>CVE-2026-56741</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
