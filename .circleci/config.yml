@@ -7,7 +7,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:17-jdk
+      - image: circleci/openjdk:21-jdk
 
     working_directory: ~/project
 

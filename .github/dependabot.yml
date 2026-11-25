@@ -21,7 +21,6 @@ updates:
       - "java"
       - "develop"
     reviewers:
-      - sebastien-belin-adp
       - higgyfella
 
   - package-ecosystem: "gradle"
@@ -39,7 +38,23 @@ updates:
       - "java"
       - "develop-v4"
     reviewers:
-      - sebastien-belin-adp
+      - higgyfella
+
+  - package-ecosystem: "gradle"
+    directory: "/"
+    open-pull-requests-limit: 20
+    registries:
+      - "interlok"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop-v5"
+    allow:
+      - dependency-type: "all"
+    labels:
+      - "dependencies"
+      - "java"
+      - "develop-v5"
+    reviewers:
       - higgyfella
 
   - package-ecosystem: "github-actions"
@@ -53,7 +68,20 @@ updates:
       - "github_actions"
       - "develop"
     reviewers:
-      - sebastien-belin-adp
+      - higgyfella
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    open-pull-requests-limit: 20
+    schedule:
+      interval: "weekly"
+    target-branch: "develop-v5"
+    allow:
+      - dependency-type: "all"
+    labels:
+      - "github_actions"
+      - "develop-v5"
+    reviewers:
       - higgyfella
 
   - package-ecosystem: "github-actions"
@@ -68,5 +96,4 @@ updates:
       - "github_actions"
       - "develop-v4"
     reviewers:
-      - sebastien-belin-adp
       - higgyfella

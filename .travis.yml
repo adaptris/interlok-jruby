@@ -11,7 +11,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 jdk:
-  - openjdk8
+  - openjdk21
 
 addons:
   apt:
